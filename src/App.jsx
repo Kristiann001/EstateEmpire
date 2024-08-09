@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './Navbar';
-import Signup from './Signup';
-import Login from './Login';
+import Navbar from './components/Navbar';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import AgentPage from './components/AgentPage';
+
+
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/agent" element={<AgentPage />} />
         {/* Add other routes here */}
       </Routes>
     </Router>

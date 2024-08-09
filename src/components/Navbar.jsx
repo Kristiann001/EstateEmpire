@@ -3,38 +3,22 @@ import { Link } from 'react-router-dom';
 
 const Navbar = ({ isLoggedIn, user, onLogout }) => {
   return (
-    <nav className="bg-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-lg font-bold text-indigo-600">EstateEmpire</Link>
+    <nav className="bg-blue-600 p-4 flex justify-between items-center">
+      <div className="text-white text-2xl">EstateEmpire</div>
+      <div className="space-x-4">
+        <Link to="/" className="text-white">Home</Link>
+        <Link to="/properties" className="text-white">Properties</Link>
+        <Link to="/Agent" className="text-white">Agent</Link>
+        {isLoggedIn ? (
+          <div className="relative">
+            <button className="text-white">{user.email}</button>
+            <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md">
+              <button onClick={onLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Log out</button>
+            </div>
           </div>
-          <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-            <Link to="/" className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-            {isLoggedIn ? (
-              <div className="relative">
-                <img
-                  src={user.image} 
-                  alt="User avatar"
-                  className="h-8 w-8 rounded-full"
-                />
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-                  <button
-                    onClick={onLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Log out
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <Link to="/login" className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Log in</Link>
-                <Link to="/signup" className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Sign up</Link>
-              </>
-            )}
-          </div>
-        </div>
+        ) : (
+          <button onClick={() => window.location.href = '/login'} className="text-white">Login</button>
+        )}
       </div>
     </nav>
   );

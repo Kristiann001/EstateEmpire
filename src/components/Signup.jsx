@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 const SignupSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters' })
-    .regex(/[a-z]/, { message: 'Must contain at least one lowercase letter' })
-    .regex(/[A-Z]/, { message: 'Must contain at least one uppercase letter' })
-    .regex(/[0-9]/, { message: 'Must contain at least one number' })
-    .regex(/[^a-zA-Z0-9]/, { message: 'Must contain at least one special character' }),
+  password: z.string()
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .regex(/[a-z]/, { message: 'Must include at least one lowercase letter' })
+    .regex(/[A-Z]/, { message: 'Must include at least one uppercase letter' })
+    .regex(/\d/, { message: 'Must include at least one number' })
+    .regex(/[@$!%*?&]/, { message: 'Must include at least one special character' }),
   confirmPassword: z.string().min(1, 'Please confirm your password'),
   accountType: z.enum(['Agent', 'Client'], { message: 'Please select an account type' })
 }).refine((data) => data.password === data.confirmPassword, {
@@ -18,121 +20,123 @@ const SignupSchema = z.object({
 });
 
 const Signup = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch } = useForm({
     resolver: zodResolver(SignupSchema)
   });
 
-  const password = watch('password');
-  const confirmPassword = watch('confirmPassword');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const accountType = watch('accountType');
+  const isFormValid = !Object.keys(errors).length && accountType;
 
-  const onSubmit = (data) => {
-    
-    fetch('https://127.0.0.1:5000/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          
-          if (data.accountType === 'Agent') {
-            window.location.href = '/agent';
-          } else {
-            window.location.href = '/';
-          }
-        } else {
-          alert(data.message); 
-        }
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
+
+      if (response.ok) {
+        navigate('/');
+      } else {
+        const result = await response.json();
+        console.error(result.message);
+      }
+    } catch (error) {
+      console.error('Signup failed:', error.message);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Welcome to EstateEmpire</h2>
-
-        
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            {...register('email')}
-            className={`mt-1 p-2 block w-full rounded-md border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-indigo-500 focus:border-indigo-500`}
-          />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-        </div>
-
-        
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Password</label>
-          <div className="relative">
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-full max-w-xs">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2 className="mb-4 text-center text-2xl font-bold">Welcome to EstateEmpire</h2>
+          <div className="flex justify-center mb-4">
+            <button type="button" className="mr-4 text-gray-600 border-b-2 border-blue-600">Sign Up</button>
+            <button type="button" onClick={() => navigate('/login')} className="text-blue-600">Log In</button>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input
+              type="email"
+              {...register('email')}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.email ? 'border-red-500' : ''}`}
+              placeholder="Enter Email"
+            />
+            {errors.email && <p className="text-red-500 text-xs italic mt-1">{errors.email.message}</p>}
+          </div>
+          <div className="mb-4 relative">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
             <input
               type={showPassword ? 'text' : 'password'}
               {...register('password')}
-              className={`mt-1 p-2 block w-full rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:ring-indigo-500 focus:border-indigo-500`}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.password ? 'border-red-500' : ''}`}
+              placeholder="Create Password"
             />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? 'Hide' : 'Show'}
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+              {showPassword ? '🙈' : '👁️'}
             </button>
+            {errors.password && <p className="text-red-500 text-xs italic mt-1">{errors.password.message}</p>}
           </div>
-          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-          <ul className="text-xs mt-2 text-gray-500">
-            <li className={password.length >= 8 ? 'text-green-500' : 'text-red-500'}>At least 8 characters</li>
-            <li className={/[a-z]/.test(password) ? 'text-green-500' : 'text-red-500'}>At least one lowercase letter</li>
-            <li className={/[A-Z]/.test(password) ? 'text-green-500' : 'text-red-500'}>At least one uppercase letter</li>
-            <li className={/[0-9]/.test(password) ? 'text-green-500' : 'text-red-500'}>At least one number</li>
-            <li className={/[^a-zA-Z0-9]/.test(password) ? 'text-green-500' : 'text-red-500'}>At least one special character</li>
-          </ul>
-        </div>
-
-        
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-          <input
-            type={showPassword ? 'text' : 'password'}
-            {...register('confirmPassword')}
-            className={`mt-1 p-2 block w-full rounded-md border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} focus:ring-indigo-500 focus:border-indigo-500`}
-          />
-          {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
-          {confirmPassword && confirmPassword !== password && (
-            <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
+          <div className="mb-4 relative">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              {...register('confirmPassword')}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.confirmPassword ? 'border-red-500' : ''}`}
+              placeholder="Confirm Password"
+            />
+            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+              {showConfirmPassword ? '🙈' : '👁️'}
+            </button>
+            {errors.confirmPassword && <p className="text-red-500 text-xs italic mt-1">{errors.confirmPassword.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">I am:</label>
+            <div className="flex items-center">
+              <label className="inline-flex items-center mr-4">
+                <input
+                  type="radio"
+                  value="Agent"
+                  {...register('accountType')}
+                  className="form-radio text-blue-500"
+                />
+                <span className="ml-2">An Agent</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="Client"
+                  {...register('accountType')}
+                  className="form-radio text-blue-500"
+                />
+                <span className="ml-2">A Client</span>
+              </label>
+            </div>
+            {errors.accountType && <p className="text-red-500 text-xs italic mt-1">{errors.accountType.message}</p>}
+          </div>
+          <div className="mb-4">
+            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 8 characters</p>
+            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 lowercase letter</p>
+            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 uppercase letter</p>
+            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 number</p>
+            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 special character (@$!%*?&)</p>
+          </div>
+          {errors.submitError && <p className="text-red-500 text-xs italic mb-4">{errors.submitError.message}</p>}
+          {isFormValid && (
+            <div className="flex items-center justify-between">
+              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Create Account
+              </button>
+            </div>
           )}
-        </div>
-
-        
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">I am</label>
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center">
-              <input type="radio" value="Agent" {...register('accountType')} className="form-radio text-indigo-600" />
-              <span className="ml-2">An agent</span>
-            </label>
-            <label className="flex items-center">
-              <input type="radio" value="Client" {...register('accountType')} className="form-radio text-indigo-600" />
-              <span className="ml-2">A client</span>
-            </label>
-          </div>
-          {errors.accountType && <p className="text-red-500 text-xs mt-1">{errors.accountType.message}</p>}
-        </div>
-
-        
-        {password && confirmPassword && password === confirmPassword && !errors.accountType && (
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-200"
-          >
-            Create account
-          </button>
-        )}
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
