@@ -37,7 +37,7 @@ export default function Navbar() {
               <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Home</NavLink>
             </li>
             <li className="ml-20 text-xl">
-              <NavLink to="/rent" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Property</NavLink>
+              <NavLink to="/property" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Property</NavLink>
             </li>
             <li className='ml-20 text-xl'>
             <NavLink to="/agent" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Agent</NavLink>
