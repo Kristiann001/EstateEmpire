@@ -27,7 +27,7 @@ const Signup = () => {
   const confirmPassword = watch('confirmPassword');
 
   const onSubmit = (data) => {
-    // Call the backend API to create the account
+    
     fetch('https://127.0.0.1:5000/signup', {
       method: 'POST',
       headers: {
@@ -38,14 +38,14 @@ const Signup = () => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // Redirect based on account type
+          
           if (data.accountType === 'Agent') {
             window.location.href = '/agent';
           } else {
             window.location.href = '/';
           }
         } else {
-          alert(data.message); // Show an error message if any
+          alert(data.message); 
         }
       });
   };
@@ -55,7 +55,7 @@ const Signup = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Welcome to EstateEmpire</h2>
 
-        {/* Email Field */}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
@@ -66,7 +66,7 @@ const Signup = () => {
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
         </div>
 
-        {/* Password Field */}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Password</label>
           <div className="relative">
@@ -93,7 +93,7 @@ const Signup = () => {
           </ul>
         </div>
 
-        {/* Confirm Password Field */}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
           <input
@@ -107,7 +107,7 @@ const Signup = () => {
           )}
         </div>
 
-        {/* Account Type Selection */}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">I am</label>
           <div className="flex items-center space-x-4">
@@ -123,7 +123,7 @@ const Signup = () => {
           {errors.accountType && <p className="text-red-500 text-xs mt-1">{errors.accountType.message}</p>}
         </div>
 
-        {/* Create Account Button */}
+        
         {password && confirmPassword && password === confirmPassword && !errors.accountType && (
           <button
             type="submit"
