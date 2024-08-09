@@ -24,15 +24,15 @@ export default function Navbar() {
   return (
     <nav className="bg-blue-600 p-12">
       <div className="flex flex-wrap items-center justify-between">
-        <h1 className="text-4xl font-bold cursor-pointer text-black">
+        <h1 className="text-4xl font-bold cursor-pointer text-amber-400">
           EstateEmpire
         </h1>
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <NavLink
             to="/login"
-            className="text-black text-xl font-semibold text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-amber-400 text-xl font-semibold text-center hover:text-white transition duration-300 ease-in-out"
           >
-            Login
+            Sign Up/Login
           </NavLink>
         </div>
         <div>
@@ -47,7 +47,7 @@ export default function Navbar() {
                 Property
               </div>
               {isPropertyDropdownOpen && (
-                <ul className="absolute left-0 top-full mt-2 bg-white shadow-lg rounded-lg z-10">
+                <ul className="absolute left-0 top-full mt-2 bg-amber-400 shadow-lg rounded-lg z-10">
                   <li className="px-4 py-2 hover:bg-gray-100">
                     <NavLink to="/rent" className="block text-gray-700" onClick={closeDropdowns}>
                       Rent
@@ -66,7 +66,7 @@ export default function Navbar() {
                 Holdings
               </div>
               {isHoldingsDropdownOpen && (
-                <ul className="absolute left-0 top-full mt-2 bg-white shadow-lg rounded-lg z-10">
+                <ul className="absolute left-0 top-full mt-2 bg-amber-400 shadow-lg rounded-lg z-10">
                   <li className="px-4 py-2 hover:bg-gray-100">
                     <NavLink to="/rented" className="block text-gray-700" onClick={closeDropdowns}>
                       Rented
