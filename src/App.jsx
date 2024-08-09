@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import HomePage from './components/HomePage';
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import AgentPage from './components/AgentPage';
+import Navbar from './Navbar';
+import Signup from './Signup';
+import Login from './Login';
 
-
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    setIsLoggedIn(true);
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+    window.location.href = '/';
+  };
+
   return (
     <Router>
-      <Navbar isAuthenticated={isAuthenticated} user={user} />
+      <Navbar isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<HomePage />} /> 
-        
-        <Route
-          path="/signup"
-          element={<Signup setIsAuthenticated={setIsAuthenticated} setUser={setUser} />}
-        />
-        <Route
-          path="/login"
-          element={<Login setIsAuthenticated={setIsAuthenticated} setUser={setUser} />}
-        />
-        <Route path="/agent" element={<AgentPage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        {/* Add other routes here */}
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
