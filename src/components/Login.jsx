@@ -40,8 +40,7 @@ const Login = () => {
       } catch (error) {
         setErrorMessage('Login failed: ' + error.message);
       }
-    const accountType = "agent"; // This should be fetched from server response
-
+    const accountType = "agent"; 
     if (accountType === "agent") {
       navigate("/agent");
     } else {
