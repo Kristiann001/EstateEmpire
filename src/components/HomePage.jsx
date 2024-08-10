@@ -83,7 +83,7 @@ function HomePage() {
 </header>
 
 
-      <h1 className='text-center text-4xl font-bold font-sans p-8'>About Us</h1>
+      <h1 className='text-center text-black text-4xl font-bold font-sans p-8'>About Us</h1>
       <div className='py-20 pl-40 flex'>
         <img className="w-64 h-64 rounded-full" src="https://st2.depositphotos.com/3591429/10778/i/450/depositphotos_107781882-stock-photo-panorama-city-and-buildings.jpg" alt="Rounded avatar" />
         <p className='px-14 text-center'>
