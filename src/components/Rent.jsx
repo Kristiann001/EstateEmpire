@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Rent() {
     const [rentals, setRentals] = useState([]);
@@ -32,14 +33,12 @@ export default function Rent() {
             </div>
             <div className="flex flex-wrap justify-center pt-8 mx-44">
                 {filteredRentals.map((rental, index) => (
-                    <div key={index} className="ml-4 mb-4 w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <a href="#">
-                            <img
-                                className="rounded-t-lg w-full h-64 object-cover"
-                                src={rental.image}
-                                alt={rental.name}
-                            />
-                        </a>
+                    <Link to={`/rental/${rental.id}`} key={index} className="ml-4 mb-4 w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <img
+                            className="rounded-t-lg w-full h-64 object-cover"
+                            src={rental.image}
+                            alt={rental.name}
+                        />
                         <div className="p-4">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {rental.name}
@@ -49,7 +48,7 @@ export default function Rent() {
                             </p>
                             <p className="font-semibold text-gray-700">Ksh {rental.price}</p>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </>
