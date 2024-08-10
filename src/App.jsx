@@ -5,7 +5,6 @@ import Rent from './components/Rent';
 import Buy from './components/Buy';
 import Rented from './components/Rented';
 import Purchased from './components/Purchased';
-import Card from './components/Card';
 import RentalDetail from './components/RentalDetail';
 import PurchaseDetail from './components/PurchaseDetail';
 
@@ -19,7 +18,6 @@ function App() {
         <Route path="/buy" element={<Buy />} />
         <Route path="/rented" element={<Rented />} />
         <Route path="/purchased" element={<Purchased />} />
-        <Route path='/card' element={<Card />} />
         <Route path="/rental/:id" element={<RentalDetail />} />
         <Route path="/purchase/:id" element={<PurchaseDetail />} />
       </Routes>
