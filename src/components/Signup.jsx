@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -27,8 +27,10 @@ const Signup = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showRequirements, setShowRequirements] = useState(false);
+
   const accountType = watch('accountType');
-  const isFormValid = !Object.keys(errors).length && accountType;
+  const password = watch('password');
 
   const onSubmit = async (data) => {
     try {
@@ -41,7 +43,11 @@ const Signup = () => {
       });
 
       if (response.ok) {
-        navigate('/');
+        if (data.accountType === 'Agent') {
+          navigate('/agent'); 
+        } else {
+          navigate('/'); 
+        }
       } else {
         const result = await response.json();
         console.error(result.message);
@@ -50,6 +56,22 @@ const Signup = () => {
       console.error('Signup failed:', error.message);
     }
   };
+
+  const checkPasswordRequirements = (password) => {
+    const requirements = [
+      { regex: /.{8,}/, message: 'At least 8 characters' },
+      { regex: /[a-z]/, message: 'At least 1 lowercase letter' },
+      { regex: /[A-Z]/, message: 'At least 1 uppercase letter' },
+      { regex: /\d/, message: 'At least 1 number' },
+      { regex: /[@$!%*?&]/, message: 'At least 1 special character (@$!%*?&)' },
+    ];
+    return requirements.map(requirement => ({
+      ...requirement,
+      satisfied: requirement.regex.test(password),
+    }));
+  };
+
+  const passwordRequirements = checkPasswordRequirements(password);
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -75,6 +97,7 @@ const Signup = () => {
             <input
               type={showPassword ? 'text' : 'password'}
               {...register('password')}
+              onFocus={() => setShowRequirements(true)}
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.password ? 'border-red-500' : ''}`}
               placeholder="Create Password"
             />
@@ -83,6 +106,15 @@ const Signup = () => {
             </button>
             {errors.password && <p className="text-red-500 text-xs italic mt-1">{errors.password.message}</p>}
           </div>
+          {showRequirements && (
+            <div className="mb-4">
+              {passwordRequirements.map((req, index) => (
+                <p key={index} className={`text-sm ${req.satisfied ? 'text-green-500' : 'text-red-500'}`}>
+                  ✔️ {req.message}
+                </p>
+              ))}
+            </div>
+          )}
           <div className="mb-4 relative">
             <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
             <input
@@ -120,21 +152,12 @@ const Signup = () => {
             </div>
             {errors.accountType && <p className="text-red-500 text-xs italic mt-1">{errors.accountType.message}</p>}
           </div>
-          <div className="mb-4">
-            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 8 characters</p>
-            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 lowercase letter</p>
-            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 uppercase letter</p>
-            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 number</p>
-            <p className={`text-sm ${errors.password ? 'text-red-500' : 'text-green-500'}`}>✔️ At least 1 special character (@$!%*?&)</p>
-          </div>
           {errors.submitError && <p className="text-red-500 text-xs italic mb-4">{errors.submitError.message}</p>}
-          {isFormValid && (
-            <div className="flex items-center justify-between">
-              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Create Account
-              </button>
-            </div>
-          )}
+          <div className="flex items-center justify-center">
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-full focus:outline-none focus:shadow-outline">
+              Create Account
+            </button>
+          </div>
         </form>
       </div>
     </div>
