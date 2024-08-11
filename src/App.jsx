@@ -7,7 +7,7 @@ import Rented from './components/Rented';
 import Purchased from './components/Purchased';
 import RentalDetail from './components/RentalDetail';
 import PurchaseDetail from './components/PurchaseDetail';
-import AgentPage from './components/AgentPage';
+import AgentPage from './components/AgentPage/AgentPage';
 
 function App() {
   return (
