@@ -1,36 +1,27 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import AgentPage from './components/AgentPage';
+import HomePage from './components/HomePage';
+import Rent from './components/Rent';
+import Buy from './components/Buy';
+import Rented from './components/Rented';
+import Purchased from './components/Purchased';
+import RentalDetail from './components/RentalDetail';
+import PurchaseDetail from './components/PurchaseDetail';
 
-
-
-
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-
-  const handleLogin = (userData) => {
-    setIsLoggedIn(true);
-    setUser(userData);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-    window.location.href = '/';
-  };
-
+function App() {
   return (
     <Router>
       <Navbar isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
       <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/agent" element={<AgentPage />} />
-    </Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/rent" element={<Rent />} />
+        <Route path="/buy" element={<Buy />} />
+        <Route path="/rented" element={<Rented />} />
+        <Route path="/purchased" element={<Purchased />} />
+        <Route path="/rental/:id" element={<RentalDetail />} />
+        <Route path="/purchase/:id" element={<PurchaseDetail />} />
+      </Routes>
     </Router>
   );
 };

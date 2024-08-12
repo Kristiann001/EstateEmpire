@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "axios": "^1.7.3",
     "flowbite": "^2.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,6 +20,7 @@
     "react-router-dom": "^6.26.0",
     "tailwind": "^4.0.0",
     "zod": "^3.23.8"
+    "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
