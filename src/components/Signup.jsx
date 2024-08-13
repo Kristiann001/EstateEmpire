@@ -50,9 +50,12 @@ const Signup = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        // Show success message and navigate to login
-        alert('Account successfully created. You can now log in.');
-        navigate('/login');
+        // Redirect to respective pages based on role
+        if (data.role === 'Agent') {
+          navigate('/agent-page'); // Redirect to Agent page
+        } else if (data.role === 'Client') {
+          navigate('/client-page'); // Redirect to Client page
+        }
       } else {
         // Handle server errors
         const result = await response.json();
@@ -95,8 +98,12 @@ const Signup = () => {
             {...register('password')}
             className={`w-full p-2 mt-1 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md`}
           />
-          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-600">
-            {showPassword ? 'Hide' : 'Show'}
+          <button 
+            type="button" 
+            onClick={() => setShowPassword(!showPassword)} 
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-600"
+          >
+            {showPassword ? '🙈' : '👁️'}
           </button>
           {password && (
             <ul className="text-sm mt-2">
