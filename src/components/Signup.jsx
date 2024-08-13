@@ -66,7 +66,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex py-10 justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
         <div className="flex justify-center mb-6">

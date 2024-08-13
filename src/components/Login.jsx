@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex py-10 justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-6">Sign in to EstateEmpire</h2>
         <div className="flex justify-center mb-6">
