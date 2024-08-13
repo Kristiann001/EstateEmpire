@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -20,7 +20,6 @@ const Login = () => {
   const [loggedInEmail, setLoggedInEmail] = useState('');
 
   useEffect(() => {
-    
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email'); 
     if (token && email) {
@@ -45,7 +44,6 @@ const Login = () => {
         localStorage.setItem('email', data.email); 
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
-        
         navigate('/');
       } else {
         const result = await response.json();
@@ -65,36 +63,17 @@ const Login = () => {
   };
 
   return (
-    <div className="flex py-10 justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-6">Sign in to EstateEmpire</h2>
+
         <div className="flex justify-center mb-6">
           <button type="button" onClick={() => navigate('/signup')} className="text-gray-600 hover:text-gray-900">
             Sign Up
           </button>
-          <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
-
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
-        <h2 className="text-center text-2xl font-bold mb-6">Login to EstateEmpire</h2>
-        <div className="flex justify-center mb-4">
-          {!isLoggedIn ? (
-            <>
-              <button type="button" onClick={() => navigate('/signup')} className="text-gray-600">Sign Up</button>
-              <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
-            </>
-          ) : (
-            <div className="text-center">
-              <p className="text-gray-700">You are logged in as <strong>{loggedInEmail}</strong></p>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="mt-2 text-red-600 border-b-2 border-red-600"
-              >
-                Log Out
-              </button>
-            </div>
-          )}
+          <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">
+            Log In
+          </button>
         </div>
 
         {!isLoggedIn ? (
@@ -137,7 +116,14 @@ const Login = () => {
           </form>
         ) : (
           <div className="text-center">
-            <p>You are already logged in as <strong>{loggedInEmail}</strong>.</p>
+            <p>You are logged in as <strong>{loggedInEmail}</strong>.</p>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="mt-2 text-red-600 border-b-2 border-red-600"
+            >
+              Log Out
+            </button>
           </div>
         )}
       </div>
