@@ -1,18 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-export default function Navbar({ isLoggedIn, loggedInEmail, setIsLoggedIn, setLoggedInEmail }) {
+export default function Navbar() {
   const [isPropertyDropdownOpen, setIsPropertyDropdownOpen] = useState(false);
   const [isHoldingsDropdownOpen, setIsHoldingsDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInEmail, setLoggedInEmail] = useState('');
   const navigate = useNavigate();
+
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
+    if (token && email) {
+      setIsLoggedIn(true);
+      setLoggedInEmail(email);
+    } else {
+      setIsLoggedIn(false);
+      setLoggedInEmail('');
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const handleLogin = () => {
+    const token = 'dummy-token';
+    const email = 'user@example.com';
+    localStorage.setItem('token', token);
+    localStorage.setItem('email', email);
+    checkLoginStatus();
+    navigate('/'); // Navigate to the home page after login
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
-    setIsLoggedIn(false);
-    setLoggedInEmail('');
+    checkLoginStatus();
     closeDropdowns();
     navigate('/login');
   };
@@ -48,6 +74,7 @@ export default function Navbar({ isLoggedIn, loggedInEmail, setIsLoggedIn, setLo
             <NavLink
               to="/login"
               className="text-amber-400 text-xl font-semibold text-center hover:text-white transition duration-300 ease-in-out"
+              onClick={handleLogin} // Simulate login for demonstration
             >
               Sign Up/Login
             </NavLink>
