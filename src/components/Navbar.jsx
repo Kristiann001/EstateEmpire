@@ -8,13 +8,12 @@ export default function Navbar() {
 
   const togglePropertyDropdown = () => {
     setIsPropertyDropdownOpen(!isPropertyDropdownOpen);
-    setIsHoldingsDropdownOpen(false); // Close Holdings dropdown when Property is toggled
+    setIsHoldingsDropdownOpen(false); 
   };
 
   const toggleHoldingsDropdown = () => {
     setIsHoldingsDropdownOpen(!isHoldingsDropdownOpen);
-    setIsPropertyDropdownOpen(false); // Close Property dropdown when Holdings is toggled
-  };
+    setIsPropertyDropdownOpen(false); 
 
   const closeDropdowns = () => {
     setIsPropertyDropdownOpen(false);
@@ -86,5 +85,4 @@ export default function Navbar() {
     </nav>
   );
 };
-
-export default Navbar;
+}
