@@ -17,12 +17,15 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInEmail, setLoggedInEmail] = useState('');
 
   useEffect(() => {
-    // Check if user is already logged in by checking the existence of a token
+    
     const token = localStorage.getItem('token');
-    if (token) {
+    const email = localStorage.getItem('email'); 
+    if (token && email) {
       setIsLoggedIn(true);
+      setLoggedInEmail(email);
     }
   }, []);
 
@@ -38,9 +41,11 @@ const Login = () => {
 
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem('token', result.token); // Save the token to localStorage
-        setIsLoggedIn(true); // Update the state to reflect that the user is logged in
-        // Navigate to the respective user page after login
+        localStorage.setItem('token', result.token); 
+        localStorage.setItem('email', data.email); 
+        setIsLoggedIn(true); 
+        setLoggedInEmail(data.email); 
+        
         navigate('/');
       } else {
         const result = await response.json();
@@ -52,9 +57,11 @@ const Login = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear the token from localStorage
-    setIsLoggedIn(false); // Update the state to reflect that the user is logged out
-    navigate('/login'); // Redirect to the login page
+    localStorage.removeItem('token'); 
+    localStorage.removeItem('email'); 
+    setIsLoggedIn(false); 
+    setLoggedInEmail(''); 
+    navigate('/login'); 
   };
 
   return (
@@ -68,13 +75,16 @@ const Login = () => {
               <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
             </>
           ) : (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="text-red-600 border-b-2 border-red-600"
-            >
-              Log Out
-            </button>
+            <div className="text-center">
+              <p className="text-gray-700">You are logged in as <strong>{loggedInEmail}</strong></p>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-2 text-red-600 border-b-2 border-red-600"
+              >
+                Log Out
+              </button>
+            </div>
           )}
         </div>
 
@@ -118,7 +128,7 @@ const Login = () => {
           </form>
         ) : (
           <div className="text-center">
-            <p>You are already logged in.</p>
+            <p>You are already logged in as <strong>{loggedInEmail}</strong>.</p>
           </div>
         )}
       </div>
