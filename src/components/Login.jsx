@@ -65,6 +65,15 @@ const Login = () => {
   };
 
   return (
+    <div className="flex py-10 justify-center items-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-6">Sign in to EstateEmpire</h2>
+        <div className="flex justify-center mb-6">
+          <button type="button" onClick={() => navigate('/signup')} className="text-gray-600 hover:text-gray-900">
+            Sign Up
+          </button>
+          <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
+
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
         <h2 className="text-center text-2xl font-bold mb-6">Login to EstateEmpire</h2>
