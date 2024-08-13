@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -16,6 +16,15 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is already logged in by checking the existence of a token
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -28,6 +37,10 @@ const Login = () => {
       });
 
       if (response.ok) {
+        const result = await response.json();
+        localStorage.setItem('token', result.token); // Save the token to localStorage
+        setIsLoggedIn(true); // Update the state to reflect that the user is logged in
+        // Navigate to the respective user page after login
         navigate('/');
       } else {
         const result = await response.json();
@@ -38,49 +51,76 @@ const Login = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token from localStorage
+    setIsLoggedIn(false); // Update the state to reflect that the user is logged out
+    navigate('/login'); // Redirect to the login page
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-6">Sign in to EstateEmpire</h2>
-        <div className="flex justify-center mb-6">
-          <button type="button" onClick={() => navigate('/signup')} className="text-gray-600 hover:text-gray-900">
-            Sign Up
-          </button>
-          <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              {...register('email')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="you@example.com"
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-          </div>
-          <div className="relative">
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Enter your password"
-            />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-              {showPassword ? '🙈' : '👁️'}
-            </button>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-          </div>
-          <div className="mt-6">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
+        <h2 className="text-center text-2xl font-bold mb-6">Login to EstateEmpire</h2>
+        <div className="flex justify-center mb-4">
+          {!isLoggedIn ? (
+            <>
+              <button type="button" onClick={() => navigate('/signup')} className="text-gray-600">Sign Up</button>
+              <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">Log In</button>
+            </>
+          ) : (
             <button
-              type="submit"
-              className="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              type="button"
+              onClick={handleLogout}
+              className="text-red-600 border-b-2 border-red-600"
             >
-              Log In
+              Log Out
             </button>
+          )}
+        </div>
+
+        {!isLoggedIn ? (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="block text-sm font-bold text-gray-700">Email</label>
+              <input
+                type="email"
+                {...register('email')}
+                className={`mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="Enter Email"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            </div>
+            <div className="relative">
+              <label className="block text-sm font-bold text-gray-700">Password</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                {...register('password')}
+                className={`mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="Enter Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            </div>
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="text-center">
+            <p>You are already logged in.</p>
           </div>
-        </form>
+        )}
       </div>
     </div>
   );
