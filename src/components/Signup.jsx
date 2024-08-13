@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 // Zod schema for validation
 const schema = z.object({
@@ -12,14 +13,10 @@ const schema = z.object({
     .regex(/[a-z]/, { message: 'Password must have at least one lowercase letter' })
     .regex(/[0-9]/, { message: 'Password must have at least one number' })
     .regex(/[!@#$%&*_]/, { message: 'Password must have at least one special character' }),
-  confirmPassword: z.string(),
   contact: z.string()
     .length(10, { message: 'Contact number must be 10 digits' })
     .regex(/^[0-9]+$/, { message: 'Contact number must contain only numbers' }),
   role: z.enum(['Agent', 'Client'], { message: 'You must select an account type' }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
 });
 
 const Signup = () => {
@@ -27,7 +24,21 @@ const Signup = () => {
     resolver: zodResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
   const password = watch('password');
+  const email = watch('email');
+  const contact = watch('contact');
+  const role = watch('role');
+
+  useEffect(() => {
+    setIsFormValid(
+      email && password && contact && role &&
+      !errors.email && !errors.password && !errors.contact && !errors.role
+    );
+  }, [email, password, contact, role, errors]);
 
   const onSubmit = async (data) => {
     try {
@@ -39,12 +50,17 @@ const Signup = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        // Handle successful signup
+        // Show success message and navigate to login
+        alert('Account successfully created. You can now log in.');
+        navigate('/login');
       } else {
-        // Handle errors
+        // Handle server errors
+        const result = await response.json();
+        setErrorMessage(result.message || 'Failed to create account');
       }
     } catch (error) {
       // Handle fetch error
+      setErrorMessage('An error occurred while creating the account.');
       console.error('Error:', error);
     }
   };
@@ -54,10 +70,12 @@ const Signup = () => {
       <h2 className="text-2xl font-bold text-center mb-4">Welcome to EstateEmpire</h2>
       <div className="flex justify-center mb-6">
         <button className="mr-2 text-blue-600 border-b-2 border-blue-600">Sign Up</button>
-        <button className="text-gray-600">Log In</button>
+        <button className="text-gray-600" onClick={() => navigate('/login')}>Log In</button>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
+
         <div className="mb-4">
           <label htmlFor="email" className="block font-semibold">Email</label>
           <input
@@ -92,17 +110,6 @@ const Signup = () => {
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
         </div>
 
-         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block font-semibold">Confirm your password</label>
-          <input
-            id="confirmPassword"
-            type={showPassword ? "text" : "password"}
-            {...register('confirmPassword')}
-            className={`w-full p-2 mt-1 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-          />
-          {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
-        </div> 
-
         <div className="mb-4">
           <label htmlFor="contact" className="block font-semibold">Contact Number</label>
           <input
@@ -128,15 +135,16 @@ const Signup = () => {
           {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
         </div>
 
-        <div className="mt-6">
-          <button
-            type="submit"
-            className="w-full p-2 bg-blue-600 text-white rounded-md"
-            disabled={!watch('email') || !watch('password') || !watch('confirmPassword') || !watch('contact') || !watch('role')}
-          >
-            Create account
-          </button>
-        </div>
+        {isFormValid && (
+          <div className="mt-6">
+            <button
+              type="submit"
+              className="w-full p-2 bg-blue-600 text-white rounded-md"
+            >
+              Create account
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );
