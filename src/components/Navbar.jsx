@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -9,6 +9,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInEmail, setLoggedInEmail] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const checkLoginStatus = () => {
     const token = localStorage.getItem('token');
@@ -24,16 +25,15 @@ export default function Navbar() {
 
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  }, [location]);
 
-  const handleLogin = () => {
-    const token = 'dummy-token';
-    const email = 'user@example.com';
-    localStorage.setItem('token', token);
-    localStorage.setItem('email', email);
-    checkLoginStatus();
-    navigate('/'); // Navigate to the home page after login
-  };
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("User is logged in with email:", loggedInEmail);
+    } else {
+      console.log("User is logged out.");
+    }
+  }, [isLoggedIn, loggedInEmail]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -74,14 +74,13 @@ export default function Navbar() {
             <NavLink
               to="/login"
               className="text-amber-400 text-xl font-semibold text-center hover:text-white transition duration-300 ease-in-out"
-              onClick={handleLogin} // Simulate login for demonstration
             >
               Sign Up/Login
             </NavLink>
           ) : (
             <div className="relative">
               <img
-                src={`https://ui-avatars.com/api/?name=${loggedInEmail}`} // Placeholder image using logged in email
+                src={`https://ui-avatars.com/api/?name=${loggedInEmail}`} 
                 alt="User Profile"
                 className="w-10 h-10 rounded-full cursor-pointer"
                 onClick={toggleUserDropdown}
