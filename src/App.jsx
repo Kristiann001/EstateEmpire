@@ -21,6 +21,7 @@ function App() {
         <Route path="/purchased" element={<Purchased />} />
         <Route path="/rental/:id" element={<RentalDetail />} />
         <Route path="/purchase/:id" element={<PurchaseDetail />} />
+        <Route path="/agent" element={<AgentPage />} /> 
       </Routes>
     </Router>
   );
