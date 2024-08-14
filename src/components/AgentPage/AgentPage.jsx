@@ -5,7 +5,7 @@ import '../AgentPage/AgentPage.css';
 import PaymentsTable from '../AgentPage/PaymentsTable';
 
 const AgentPage = () => {
-    const [propertyType, setPropertyType] = useState(''); // Track property type
+    const [propertyType, setPropertyType] = useState(''); 
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const [price, setPrice] = useState('');
@@ -14,7 +14,7 @@ const AgentPage = () => {
     const [units, setUnits] = useState('');
     const [imageURL, setImageURL] = useState('');
     const [listings, setListings] = useState([]);
-    const [payments, setPayments] = useState([]);  // Add state for payments
+    const [payments, setPayments] = useState([]);  
     const [dropdownOptions, setDropdownOptions] = useState({
         propertyTypes: [],
     });
@@ -57,6 +57,7 @@ const AgentPage = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        
         const formData = {
             name: name,
             type: type,
@@ -73,11 +74,14 @@ const AgentPage = () => {
         try {
             const endpoint = propertyType === 'rent' ? '/properties/for-rent' : '/properties/for-sale';
             const response = await axios.post(`http://127.0.0.1:5000${endpoint}`, formData);
-            setListings([...listings, response.data]);
+            
+          
+            window.location.reload();
         } catch (error) {
             console.error('Error adding listing:', error);
         }
     };
+    
     
     
 
