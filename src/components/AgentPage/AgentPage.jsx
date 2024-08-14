@@ -14,6 +14,7 @@ const AgentPage = () => {
     const [units, setUnits] = useState('');
     const [imageURL, setImageURL] = useState('');
     const [listings, setListings] = useState([]);
+    const [payments, setPayments] = useState([]);  // Add state for payments
     const [dropdownOptions, setDropdownOptions] = useState({
         propertyTypes: [],
     });
@@ -21,30 +22,33 @@ const AgentPage = () => {
     useEffect(() => {
         const fetchDropdownOptions = async () => {
             try {
-                const response = await axios.get('/api/dropdown-options');
+                const response = await axios.get('http://127.0.0.1:5000/unit_types');
                 setDropdownOptions(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown options:', error);
             }
         };
+        
 
         const fetchListings = async () => {
             try {
-                const response = await axios.get('/api/listings');
+                const response = await axios.get('http://127.0.0.1:5000/properties');
                 setListings(response.data);
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }
         };
+        
 
         const fetchPayments = async () => {
             try {
-                const response = await axios.get('/api/payments');
+                const response = await axios.get('http://127.0.0.1:5000/rental-payments');
                 setPayments(response.data);
             } catch (error) {
                 console.error('Error fetching payments:', error);
             }
         };
+        
 
         fetchDropdownOptions();
         fetchListings();
@@ -66,23 +70,26 @@ const AgentPage = () => {
         if (imageURL) {
             formData.append('imageURL', imageURL);
         }
-
+    
         try {
-            const response = await axios.post('/api/add-listing', formData);
+            const endpoint = propertyType === 'rent' ? '/properties/for-rent' : '/properties/for-sale';
+            const response = await axios.post(`http://127.0.0.1:5000${endpoint}`, formData);
             setListings([...listings, response.data]);
         } catch (error) {
             console.error('Error adding listing:', error);
         }
     };
+    
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`/api/delete-listing/${id}`);
+            await axios.delete(`http://127.0.0.1:5000/properties/${id}`);
             setListings(listings.filter(listing => listing.id !== id));
         } catch (error) {
             console.error('Error deleting listing:', error);
         }
     };
+    
 
     return (
         <div className="agent-page">
@@ -122,17 +129,18 @@ const AgentPage = () => {
                         <div className="form-group">
                             <label htmlFor="type">Type</label>
                             <select
-                                id="type"
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
-                            >
-                                <option value="">Select Type</option>
-                                {dropdownOptions.propertyTypes.map((option, index) => (
-                                    <option key={index} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
+    id="type"
+    value={type}
+    onChange={(e) => setType(e.target.value)}
+>
+    <option value="">Select Type</option>
+    {dropdownOptions.propertyTypes.map((unit_type) => (
+        <option key={unit_type.id} value={unit_type.name}>
+            {unit_type.name}
+        </option>
+    ))}
+</select>
+
                         </div>
                     </div>
                     <div className="form-group-row">
