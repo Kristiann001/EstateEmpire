@@ -1,4 +1,3 @@
-// src/components/PaymentsTable.js
 import React from 'react';
 
 const PaymentsTable = ({ payments, propertyType }) => {

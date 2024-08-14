@@ -57,20 +57,19 @@ const AgentPage = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('propertyType', propertyType);
-        formData.append('name', name);
-        formData.append('type', type);
-        formData.append('price', price);
-        formData.append('location', location);
-        formData.append('description', description);
-        if (units) {
-            formData.append('units', units);
-        }
-        if (imageURL) {
-            formData.append('imageURL', imageURL);
-        }
-    
+        const formData = {
+            name: name,
+            type: type,
+            price: price,
+            location: location,
+            description: description,
+            units: units || null, 
+            image: imageURL || null, 
+            status: 'AVAILABLE', 
+            unit_type_id: dropdownOptions.propertyTypes.find(option => option.name === type)?.id,
+            user_id: 1 
+        };
+        
         try {
             const endpoint = propertyType === 'rent' ? '/properties/for-rent' : '/properties/for-sale';
             const response = await axios.post(`http://127.0.0.1:5000${endpoint}`, formData);
@@ -79,6 +78,7 @@ const AgentPage = () => {
             console.error('Error adding listing:', error);
         }
     };
+    
     
 
     const handleDelete = async (id) => {
@@ -93,9 +93,6 @@ const AgentPage = () => {
 
     return (
         <div className="agent-page">
-            <nav className="navbar">
-                <span className="navbar-brand">EstateEmpire</span>
-            </nav>
             <div className="form-container">
                 <form onSubmit={handleFormSubmit}>
                     <h2 className="form-title">Add a Listing</h2>
