@@ -33,7 +33,7 @@ const AgentPage = () => {
     useEffect(() => {
         const fetchDropdownOptions = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/unit_types');
+                const response = await axios.get('https://estateempire-backend.onrender.com/unit_types');
                 setDropdownOptions(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown options:', error);
@@ -43,7 +43,7 @@ const AgentPage = () => {
 
         const fetchListings = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/properties');
+                const response = await axios.get('https://estateempire-backend.onrender.com/properties');
                 setListings(response.data);
             } catch (error) {
                 console.error('Error fetching listings:', error);
@@ -53,7 +53,7 @@ const AgentPage = () => {
 
         const fetchPayments = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/rental-payments');
+                const response = await axios.get('https://estateempire-backend.onrender.com/rental-payments');
                 setPayments(response.data);
             } catch (error) {
                 console.error('Error fetching payments:', error);
@@ -98,7 +98,7 @@ const AgentPage = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://127.0.0.1:5000/properties/${id}`);
+            await axios.delete(`https://estateempire-backend.onrender.com/properties/${id}`);
             setListings(listings.filter(listing => listing.id !== id));
         } catch (error) {
             console.error('Error deleting listing:', error);
