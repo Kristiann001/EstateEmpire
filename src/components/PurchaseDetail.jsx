@@ -9,7 +9,7 @@ export default function RentedDetail() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         console.log(token);
-        axios.get(`http://127.0.0.1:5000/properties/for-rent/${id}`, {
+        axios.get(`https://estateempire-backend.onrender.com/properties/for-rent/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -34,7 +34,7 @@ export default function RentedDetail() {
             console.log('Payload:', payload);
             
             try {
-                const response = await axios.post('http://127.0.0.1:5000/rentals', payload, {
+                const response = await axios.post('https://estateempire-backend.onrender.com/rentals', payload, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
