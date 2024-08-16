@@ -25,7 +25,8 @@ const AgentPage = () => {
         const role = localStorage.getItem('role')
 
         if (role != 'Agent') {
-           navigate('/')
+   
+            navigate('/')
         }
         
     }, [])
