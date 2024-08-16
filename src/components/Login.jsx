@@ -42,6 +42,7 @@ const Login = () => {
         const result = await response.json();
         localStorage.setItem('token', result.token); 
         localStorage.setItem('email', data.email); 
+        localStorage.setItem('role', result?.user?.role )
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
         navigate('/');
