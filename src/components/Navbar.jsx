@@ -10,18 +10,26 @@ export default function Navbar() {
   const [loggedInEmail, setLoggedInEmail] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   const checkLoginStatus = () => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
+    const role = localStorage.getItem('role');
+  
+
     if (token && email) {
       setIsLoggedIn(true);
       setLoggedInEmail(email);
+      
     } else {
       setIsLoggedIn(false);
       setLoggedInEmail('');
+    
     }
   };
+
+  
 
   useEffect(() => {
     checkLoginStatus();
@@ -38,6 +46,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+    localStorage.removeItem('role')
     checkLoginStatus();
     closeDropdowns();
     navigate('/login');

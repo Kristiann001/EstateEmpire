@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaTrashAlt, FaImage } from 'react-icons/fa';
 import '../AgentPage/AgentPage.css';
 import PaymentsTable from '../AgentPage/PaymentsTable';
+import { useNavigate } from 'react-router-dom';
 
 const AgentPage = () => {
     const [propertyType, setPropertyType] = useState(''); 
@@ -18,6 +19,16 @@ const AgentPage = () => {
     const [dropdownOptions, setDropdownOptions] = useState({
         propertyTypes: [],
     });
+
+    const navigate = useNavigate()
+    useEffect(() => {
+        const role = localStorage.getItem('role')
+
+        if (role != 'Agent') {
+           navigate('/')
+        }
+        
+    }, [])
 
     useEffect(() => {
         const fetchDropdownOptions = async () => {

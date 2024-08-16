@@ -43,6 +43,7 @@ const Login = () => {
         console.log(result)
         localStorage.setItem('token', result.access_token); 
         localStorage.setItem('email', data.email); 
+        localStorage.setItem('role', result?.user?.role )
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
         navigate('/');
