@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
@@ -156,14 +155,15 @@ export default function Navbar() {
                 </ul>
               )}
             </li>
-            {
-              <li className="ml-20 text-xl">
-                <NavLink to="/agent" className="block text-gray-700" onClick={closeDropdowns}>
-                  Agent
-                </NavLink>
-              </li>
-            }
-
+            <li className="ml-20 text-xl">
+              <NavLink
+                to="/agent"
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                onClick={closeDropdowns}
+              >
+                Agent
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

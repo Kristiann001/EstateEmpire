@@ -244,7 +244,7 @@ const AgentPage = () => {
                     </tbody>
                 </table>
             </div>
-            <PaymentsTable payments={payments} propertyType={propertyType} />
+            {/* <PaymentsTable payments={payments} propertyType={propertyType} /> */}
         </div>
     );
 };
