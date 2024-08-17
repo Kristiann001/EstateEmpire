@@ -63,20 +63,20 @@ export default function RentalDetail() {
     }
 
     return (
-        <div className="flex flex-col p-10 space-y-4">
-            <div className="flex space-x-4">
+        <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 space-y-4">
+            <div className="flex flex-col md:flex-row md:space-x-4">
                 <img 
-                    className="object-cover w-1/2 rounded-lg" 
+                    className="object-cover w-full md:w-1/2 rounded-lg mb-4 md:mb-0"
                     src={rental.image} 
                     alt={rental.name} 
                 />
 
-                <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800" style={{ width: 'calc(50% - 4px)' }}>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
-                    <p className="text-xl font-semibold">{rental.location}</p>
-                    <p className="py-10 text-xl font-semibold">Ksh {rental.price}</p>
+                <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:w-1/2">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
+                    <p className="text-lg sm:text-xl font-semibold">{rental.location}</p>
+                    <p className="py-4 text-lg sm:text-xl font-semibold">Ksh {rental.price}</p>
                     <button 
-                        className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
+                        className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
                         onClick={handleRent}
                     >
                         Rent
@@ -84,9 +84,9 @@ export default function RentalDetail() {
                 </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg shadow p-6 dark:border-gray-700 dark:bg-gray-800 w-full">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
-                <p className="text-lg text-gray-700 dark:text-gray-300">
+            <div className="bg-white border border-gray-200 rounded-lg shadow p-4 sm:p-6 lg:p-8 dark:border-gray-700 dark:bg-gray-800 w-full">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
+                <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300">
                     {rental.description}
                 </p>
             </div>
