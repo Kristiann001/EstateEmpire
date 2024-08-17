@@ -22,25 +22,25 @@ export default function Rent() {
 
     return (
         <>
-            <div className="flex justify-center pt-8">
+            <div className="flex justify-center pt-8 px-4 sm:px-6 lg:px-8">
                 <input
                     type="text"
                     placeholder="Search for rentals..."
-                    className="px-4 py-2 border border-gray-300 rounded-lg"
+                    className="px-4 py-2 border border-gray-300 rounded-lg w-full max-w-xs sm:max-w-sm lg:max-w-md"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className="flex flex-wrap justify-center pt-8 mx-44">
+            <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8">
                 {filteredRentals.map((rental, index) => (
-                    <Link to={`/rental/${rental.id}`} key={index} className="ml-4 mb-4 w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <Link to={`/rental/${rental.id}`} key={index} className="m-4 w-full sm:w-80 md:w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <img
-                            className="rounded-t-lg w-full h-64 object-cover"
+                            className="rounded-t-lg w-full h-48 sm:h-64 object-cover"
                             src={rental.image}
                             alt={rental.name}
                         />
                         <div className="p-4">
-                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h5 className="mb-2 text-lg sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {rental.name}
                             </h5>
                             <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
