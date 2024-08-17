@@ -26,7 +26,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/featured/beautiful-house-x1yu28g8twzle26l.jpg"
         alt="House 1"
       />
@@ -34,7 +34,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpaper.dog/large/20504774.jpg"
         alt="House 2"
       />
@@ -42,7 +42,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/hd/dream-house-pictures-1800-x-1200-yjphbmq6lkdrikdb.jpg"
         alt="House 3"
       />
@@ -50,7 +50,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/hd/dream-house-pictures-1600-x-1067-bxqijo1xud22np4s.jpg"
         alt="House 4"
       />
@@ -58,7 +58,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/hd/dream-house-pictures-4454-x-2827-sj7pbfx9tdawduqc.jpg"
         alt="House 5"
       />
@@ -66,7 +66,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/hd/dream-house-pictures-1920-x-1080-979ccb6wjuizse7c.jpg"
         alt="House 6"
       />
@@ -74,7 +74,7 @@ function HomePage() {
     <div>
       <img
         className="object-cover"
-        style={{ width: "1500px", height: "800px" }}
+        style={{ width: "100%", height: "800px" }}
         src="https://wallpapers.com/images/hd/dream-house-pictures-2500-x-1372-sdhybwdznk8wpvra.jpg"
         alt="House 7"
       />

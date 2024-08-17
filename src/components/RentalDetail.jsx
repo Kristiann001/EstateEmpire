@@ -7,14 +7,56 @@ export default function RentalDetail() {
     const [rental, setRental] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:5000/properties/for-rent/${id}`)
-            .then(response => {
-                setRental(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the rental details!', error);
-            });
+        const token = localStorage.getItem('token');
+        axios.get(`https://estateempire-backend.onrender.com/properties/for-rent/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setRental(response.data);
+        })
+        .catch(error => {
+            console.error('There was an error fetching the rental details!', error);
+        });
     }, [id]);
+
+    const handleRent = async () => {
+        const phoneNumber = prompt("Please enter your phone number:");
+        if (phoneNumber) {
+            const token = localStorage.getItem('token');
+            const payload = {
+                property_id: parseInt(id),
+                amount: parseInt(rental.price),
+                phone_number: phoneNumber
+            };
+            console.log('Payload:', payload);
+
+            try {
+                const response = await axios.post('https://estateempire-backend.onrender.com/rentals', payload, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                alert('Rent payment initiated successfully!');
+                console.log(response.data);
+            } catch (error) {
+                console.error('Full error object:', error);
+                if (error.response) {
+                    console.error('Response data:', error.response.data);
+                    console.error('Response status:', error.response.status);
+                    alert(`Rent payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
+                } else if (error.request) {
+                    console.error('Request made but no response received:', error.request);
+                    alert('No response received from server. Please try again later.');
+                } else {
+                    console.error('Error setting up request:', error.message);
+                    alert('An error occurred while setting up the request.');
+                }
+            }
+        }
+    };
 
     if (!rental) {
         return <div>Loading...</div>;
@@ -33,7 +75,10 @@ export default function RentalDetail() {
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
                     <p className="text-xl font-semibold">{rental.location}</p>
                     <p className="py-10 text-xl font-semibold">Ksh {rental.price}</p>
-                    <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700">
+                    <button 
+                        className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
+                        onClick={handleRent}
+                    >
                         Rent
                     </button>
                 </div>
