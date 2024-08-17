@@ -39,7 +39,7 @@ const Login = () => {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
         localStorage.setItem('token', result.access_token); 
@@ -47,8 +47,18 @@ const Login = () => {
         localStorage.setItem('role', result?.user?.role );
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
-
-        toast.success(`Logged in successfully as ${result.user.role}!`);
+  
+        
+        toast.success(`Logged in successfully as ${result.user.role}!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+    
         
         navigate('/');
       } else {
