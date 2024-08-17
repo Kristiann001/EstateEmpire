@@ -70,8 +70,8 @@ const Signup = () => {
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
         <div className="flex justify-center mb-6">
-          <button className="mr-4 text-blue-600 border-b-2 border-blue-600">Sign Up</button>
-          <button className="text-gray-600 hover:text-gray-900" onClick={() => navigate('/login')}>Log In</button>
+          <button className="px-4 py-1 bg-blue-600 text-white rounded-full focus:outline-none">Sign Up</button>
+          <button className="px-4 py-1 border border-blue-400 text-blue-600 rounded-full focus:outline-none" onClick={() => navigate('/login')}>Log In</button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -83,7 +83,7 @@ const Signup = () => {
               id="email"
               type="email"
               {...register('email')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+              className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="you@example.com"
             />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -95,7 +95,7 @@ const Signup = () => {
               id="password"
               type={showPassword ? "text" : "password"}
               {...register('password')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+              className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Enter your password"
             />
             <button 
