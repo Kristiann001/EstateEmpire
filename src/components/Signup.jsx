@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Zod schema for validation
 const schema = z.object({
@@ -50,11 +52,8 @@ const Signup = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        if (data.role === 'Agent') {
-          navigate('/login'); 
-        } else if (data.role === 'Client') {
-          navigate('/login'); 
-        }
+        toast.success('Account created successfully!');
+        navigate('/login');
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
@@ -66,93 +65,96 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex py-10 justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
-        <div className="flex justify-center mb-6">
-          <button className="px-4 py-1 bg-blue-600 text-white rounded-full focus:outline-none">Sign Up</button>
-          <button className="px-4 py-1 border border-blue-400 text-blue-600 rounded-full focus:outline-none" onClick={() => navigate('/login')}>Log In</button>
+    <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
+      <ToastContainer />
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="bg-white bg-opacity-80 shadow-lg rounded-lg p-8 m-1 w-full max-w-md relative z-10">
+          <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
+          <div className="flex justify-center mb-6">
+            <button className="px-4 py-1 bg-blue-600 text-white rounded-full focus:outline-none">Sign Up</button>
+            <button className="px-4 py-1 border border-blue-400 text-blue-600 rounded-full focus:outline-none" onClick={() => navigate('/login')}>Log In</button>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                id="email"
+                type="email"
+                {...register('email')}
+                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="you@example.com"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            </div>
+
+            <div className="relative">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                {...register('password')}
+                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="Enter your password"
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)} 
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-600"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+              {password && (
+                <ul className="text-sm mt-2">
+                  <li className={`${password.length >= 8 ? 'text-green-500' : 'text-red-500'}`}>At least 8 characters</li>
+                  <li className={`${/[A-Z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one uppercase letter</li>
+                  <li className={`${/[a-z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one lowercase letter</li>
+                  <li className={`${/[0-9]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one number</li>
+                  <li className={`${/[!@#$%&*_]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one special character</li>
+                </ul>
+              )}
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="contact" className="block text-sm font-medium text-gray-700">Contact Number</label>
+              <input
+                id="contact"
+                type="text"
+                {...register('contact')}
+                className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.contact ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="0123456789"
+              />
+              {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact.message}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">I am</label>
+              <select
+                id="role"
+                {...register('role')}
+                className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.role ? 'border-red-500' : 'border-gray-300'}`}
+              >
+                <option value="">Select your account type</option>
+                <option value="Agent">Agent</option>
+                <option value="Client">Client</option>
+              </select>
+              {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="submit"
+                className={`w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${isFormValid ? '' : 'opacity-50 cursor-not-allowed'}`}
+                disabled={!isFormValid}
+              >
+                Create account
+              </button>
+            </div>
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              id="email"
-              type="email"
-              {...register('email')}
-              className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="you@example.com"
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-          </div>
-
-          <div className="relative">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              {...register('password')}
-              className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Enter your password"
-            />
-            <button 
-              type="button" 
-              onClick={() => setShowPassword(!showPassword)} 
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-600"
-            >
-              {showPassword ? '🙈' : '👁️'}
-            </button>
-            {password && (
-              <ul className="text-sm mt-2">
-                <li className={`${password.length >= 8 ? 'text-green-500' : 'text-red-500'}`}>At least 8 characters</li>
-                <li className={`${/[A-Z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one uppercase letter</li>
-                <li className={`${/[a-z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one lowercase letter</li>
-                <li className={`${/[0-9]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one number</li>
-                <li className={`${/[!@#$%&*_]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one special character</li>
-              </ul>
-            )}
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="contact" className="block text-sm font-medium text-gray-700">Contact Number</label>
-            <input
-              id="contact"
-              type="text"
-              {...register('contact')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.contact ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="0123456789"
-            />
-            {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact.message}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">I am</label>
-            <select
-              id="role"
-              {...register('role')}
-              className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.role ? 'border-red-500' : 'border-gray-300'}`}
-            >
-              <option value="">Select your account type</option>
-              <option value="Agent">Agent</option>
-              <option value="Client">Client</option>
-            </select>
-            {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
-          </div>
-
-          <div className="mt-6">
-            <button
-              type="submit"
-              className={`w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${isFormValid ? '' : 'opacity-50 cursor-not-allowed'}`}
-              disabled={!isFormValid}
-            >
-              Create account
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
