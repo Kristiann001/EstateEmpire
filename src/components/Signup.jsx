@@ -57,12 +57,14 @@ const Signup = () => {
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
+        toast.error(result.message || 'Failed to create account'); 
       }
     } catch (error) {
       setErrorMessage('An error occurred while creating the account.');
-      toast.error('Error:', error);
+      toast.error('An error occurred while creating the account.');
     }
   };
+  
 
   return (
     <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
