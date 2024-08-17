@@ -60,23 +60,23 @@ const Signup = () => {
       }
     } catch (error) {
       setErrorMessage('An error occurred while creating the account.');
-      console.error('Error:', error);
+      toast.error('Error:', error);
     }
   };
 
   return (
     <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
       <ToastContainer />
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="bg-white bg-opacity-80 shadow-lg rounded-lg p-8 m-1 w-full max-w-md relative z-10">
-          <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
-          <div className="flex justify-center mb-6">
-            <button className="px-4 py-1 bg-blue-600 text-white rounded-full focus:outline-none">Sign Up</button>
-            <button className="px-4 py-1 border border-blue-400 text-blue-600 rounded-full focus:outline-none" onClick={() => navigate('/login')}>Log In</button>
+      <div className="flex justify-center items-center min-h-screen p-4">
+        <div className="bg-white bg-opacity-80 shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-md mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-4 sm:mb-6 text-gray-900">Create Your EstateEmpire Account</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-2 mb-4 sm:mb-6">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-full focus:outline-none">Sign Up</button>
+            <button className="px-4 py-2 border border-blue-400 text-blue-600 rounded-full focus:outline-none" onClick={() => navigate('/login')}>Log In</button>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+            {errorMessage && <p className="text-red-500 text-xs sm:text-sm mb-4">{errorMessage}</p>}
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -84,7 +84,7 @@ const Signup = () => {
                 id="email"
                 type="email"
                 {...register('email')}
-                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                className={`mt-1 block w-full px-3 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                 placeholder="you@example.com"
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -96,7 +96,7 @@ const Signup = () => {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register('password')}
-                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                className={`mt-1 block w-full px-3 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                 placeholder="Enter your password"
               />
               <button 
@@ -107,7 +107,7 @@ const Signup = () => {
                 {showPassword ? '🙈' : '👁️'}
               </button>
               {password && (
-                <ul className="text-sm mt-2">
+                <ul className="text-xs sm:text-sm mt-2">
                   <li className={`${password.length >= 8 ? 'text-green-500' : 'text-red-500'}`}>At least 8 characters</li>
                   <li className={`${/[A-Z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one uppercase letter</li>
                   <li className={`${/[a-z]/.test(password) ? 'text-green-500' : 'text-red-500'}`}>At least one lowercase letter</li>
@@ -124,7 +124,7 @@ const Signup = () => {
                 id="contact"
                 type="text"
                 {...register('contact')}
-                className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.contact ? 'border-red-500' : 'border-gray-300'}`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.contact ? 'border-red-500' : 'border-gray-300'}`}
                 placeholder="0123456789"
               />
               {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact.message}</p>}
@@ -135,7 +135,7 @@ const Signup = () => {
               <select
                 id="role"
                 {...register('role')}
-                className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.role ? 'border-red-500' : 'border-gray-300'}`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.role ? 'border-red-500' : 'border-gray-300'}`}
               >
                 <option value="">Select your account type</option>
                 <option value="Agent">Agent</option>
@@ -144,7 +144,7 @@ const Signup = () => {
               {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
             </div>
 
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <button
                 type="submit"
                 className={`w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${isFormValid ? '' : 'opacity-50 cursor-not-allowed'}`}
