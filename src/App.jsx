@@ -3,8 +3,6 @@ import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import Rent from './components/Rent';
 import Buy from './components/Buy';
-import Rented from './components/Rented';
-import Purchased from './components/Purchased';
 import RentalDetail from './components/RentalDetail';
 import PurchaseDetail from './components/PurchaseDetail';
 import AgentPage from './components/AgentPage/AgentPage';
@@ -20,8 +18,6 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/rent" element={<Rent />} />
         <Route path="/buy" element={<Buy />} />
-        <Route path="/rented" element={<Rented />} />
-        <Route path="/purchased" element={<Purchased />} />
         <Route path="/rental/:id" element={<RentalDetail />} />
         <Route path="/purchase/:id" element={<PurchaseDetail />} />
         <Route path="/agent" element={<AgentPage />} /> 
