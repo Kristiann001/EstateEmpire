@@ -51,9 +51,9 @@ const Signup = () => {
       });
       if (response.ok) {
         if (data.role === 'Agent') {
-          navigate('/agent-page'); // Redirect to Agent page
+          navigate('/login'); 
         } else if (data.role === 'Client') {
-          navigate('/client-page'); // Redirect to Client page
+          navigate('/login'); 
         }
       } else {
         const result = await response.json();

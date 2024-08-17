@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -40,19 +42,21 @@ const Login = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result)
         localStorage.setItem('token', result.access_token); 
         localStorage.setItem('email', data.email); 
-        localStorage.setItem('role', result?.user?.role )
+        localStorage.setItem('role', result?.user?.role );
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
+
+        toast.success(`Logged in successfully as ${result.user.role}!`);
+        
         navigate('/');
       } else {
         const result = await response.json();
-        console.error(result.message);
+        toast.error(result.message || 'Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Login failed:', error.message);
+      toast.error('Login failed: ' + error.message);
     }
   };
 
@@ -65,38 +69,48 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-6">Sign in to EstateEmpire</h2>
+    <div className="flex justify-center items-center min-h-screen bg-white">
+      <ToastContainer />
+      <div className="w-full max-w-md border-2 border-blue-400 rounded-lg p-8">
+        <h2 className="text-center text-xl font-bold text-black mb-4">Welcome to EstateEmpire</h2>
 
-        <div className="flex justify-center mb-6">
-          <button type="button" onClick={() => navigate('/signup')} className="text-gray-600 hover:text-gray-900">
+        <div className="flex justify-center mb-4 space-x-6">
+          <button
+            type="button"
+            onClick={() => navigate('/signup')}
+            className="px-4 py-1 border border-blue-400 text-blue-600 rounded-full focus:outline-none"
+          >
             Sign Up
           </button>
-          <button type="button" className="ml-4 text-blue-600 border-b-2 border-blue-600">
+          <button
+            type="button"
+            className="px-4 py-1 bg-blue-600 text-white rounded-full focus:outline-none"
+          >
             Log In
           </button>
         </div>
 
+        <hr className="border-t border-gray-300 mb-6" />
+
         {!isLoggedIn ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm font-bold text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-black">Email</label>
               <input
                 type="email"
                 {...register('email')}
-                className={`mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                 placeholder="Enter Email"
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
             <div className="relative">
-              <label className="block text-sm font-bold text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-black">Password</label>
               <input
                 type={showPassword ? 'text' : 'password'}
                 {...register('password')}
-                className={`mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-                placeholder="Enter Password"
+                className={`mt-1 w-full px-4 py-2 bg-gray-200 text-black border rounded-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder="Create Password"
               />
               <button
                 type="button"
@@ -107,10 +121,10 @@ const Login = () => {
               </button>
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
             </div>
-            <div className="mt-6">
+            <div className="mt-4">
               <button
                 type="submit"
-                className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="w-full py-2 bg-blue-600 text-white font-bold rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 Log In
               </button>
