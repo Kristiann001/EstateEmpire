@@ -53,7 +53,8 @@ const Signup = () => {
       });
       if (response.ok) {
         toast.success('Account created successfully!');
-        navigate('/login');
+        // Delay navigation to ensure toast is visible
+        setTimeout(() => navigate('/login'), 2000);
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
@@ -64,7 +65,6 @@ const Signup = () => {
       toast.error('An error occurred while creating the account.');
     }
   };
-  
 
   return (
     <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
