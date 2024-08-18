@@ -39,16 +39,16 @@ const Login = () => {
         },
         body: JSON.stringify(data),
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         localStorage.setItem('token', result.access_token); 
         localStorage.setItem('email', data.email); 
-        localStorage.setItem('role', result?.user?.role );
+        localStorage.setItem('role', result.user.role);
         setIsLoggedIn(true); 
         setLoggedInEmail(data.email); 
-  
         
+        // Show success toast with role information
         toast.success(`Logged in successfully as ${result.user.role}!`, {
           position: "top-right",
           autoClose: 5000,
@@ -58,9 +58,11 @@ const Login = () => {
           draggable: true,
           progress: undefined,
         });
-    
         
-        navigate('/');
+        // Navigate to the home page after showing the toast
+        setTimeout(() => {
+          navigate('/');
+        }, 700); // Adjust the delay if needed to ensure the toast is visible
       } else {
         const result = await response.json();
         toast.error(result.message || 'Login failed. Please try again.');
