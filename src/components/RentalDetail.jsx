@@ -1,95 +1,107 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import PurchaseModal from './PurchaseModal';
 
 export default function RentalDetail() {
     const { id } = useParams();
-    const [rental, setRental] = useState(null);
+    const [rental, setRentals] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        axios.get(`https://estateempire-backend.onrender.com/properties/for-rent/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
+useEffect(() => {
+    const token = localStorage.getItem('token');
+    axios.get(`http://127.0.0.1:5000/properties/for-rent/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then(response => {
-            setRental(response.data);
+            setRentals(response.data);
         })
         .catch(error => {
             console.error('There was an error fetching the rental details!', error);
         });
-    }, [id]);
+}, [id]);
 
-    const handleRent = async () => {
-        const phoneNumber = prompt("Please enter your phone number:");
-        if (phoneNumber) {
-            const token = localStorage.getItem('token');
-            const payload = {
-                property_id: parseInt(id),
-                amount: parseInt(rental.price),
-                phone_number: phoneNumber
-            };
-            console.log('Payload:', payload);
+const handleRent = () => {
+    setIsModalOpen(true);
+};
 
-            try {
-                const response = await axios.post('https://estateempire-backend.onrender.com/rentals', payload, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                alert('Rent payment initiated successfully!');
-                console.log(response.data);
-            } catch (error) {
-                console.error('Full error object:', error);
-                if (error.response) {
-                    console.error('Response data:', error.response.data);
-                    console.error('Response status:', error.response.status);
-                    alert(`Rent payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
-                } else if (error.request) {
-                    console.error('Request made but no response received:', error.request);
-                    alert('No response received from server. Please try again later.');
-                } else {
-                    console.error('Error setting up request:', error.message);
-                    alert('An error occurred while setting up the request.');
-                }
-            }
-        }
+const handleModalSubmit = async (phoneNumber) => {
+    setIsModalOpen(false);
+    const token = localStorage.getItem('token');
+    const payload = {
+        property_id: parseInt(id),
+        amount: parseInt(purchase.price),
+        phone_number: phoneNumber
     };
+    console.log('Payload:', payload);
 
-    if (!rental) {
-        return <div>Loading...</div>;
+    try {
+        const response = await axios.post('http://127.0.0.1:5000/purchases', payload, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        alert('Purchase payment initiated successfully!');
+        console.log(response.data);
+    } catch (error) {
+        console.error('Full error object:', error);
+        if (error.response) {
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            alert(`Purchase payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
+        } else if (error.request) {
+            console.error('Request made but no response received:', error.request);
+            alert('No response received from server. Please try again later.');
+        } else {
+            console.error('Error setting up request:', error.message);
+            alert('An error occurred while setting up the request.');
+        }
     }
+};
 
-    return (
-        <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 space-y-4">
-            <div className="flex flex-col md:flex-row md:space-x-4">
-                <img 
-                    className="object-cover w-full md:w-1/2 rounded-lg mb-4 md:mb-0"
-                    src={rental.image} 
-                    alt={rental.name} 
-                />
+if (!rental) {
+    return <div>Loading...</div>;
+}
 
-                <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 md:w-1/2">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
-                    <p className="text-lg sm:text-xl font-semibold">{rental.location}</p>
-                    <p className="py-4 text-lg sm:text-xl font-semibold">Ksh {rental.price}</p>
-                    <button 
-                        className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
-                        onClick={handleRent}
-                    >
-                        Rent
-                    </button>
-                </div>
-            </div>
+return (
+    <div className="flex flex-col p-10 space-y-4">
+        <div className="flex space-x-4">
+            <img
+                className="object-cover w-1/2 rounded-lg"
+                src={rental.image}
+                alt={rental.name}
+            />
 
-            <div className="bg-white border border-gray-200 rounded-lg shadow p-4 sm:p-6 lg:p-8 dark:border-gray-700 dark:bg-gray-800 w-full">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
-                <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300">
-                    {rental.description}
-                </p>
+            <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800" style={{ width: 'calc(50% - 4px)' }}>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
+                <p className="text-xl font-semibold">{rental.location}</p>
+                <p className="py-10 text-xl font-semibold">Ksh {rental.price}</p>
+                <button
+                    className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
+                    onClick={handleRent}
+                >
+                    Rent
+                </button>
             </div>
         </div>
-    );
-}
+
+        <div className="bg-white border border-gray-200 rounded-lg shadow p-6 dark:border-gray-700 dark:bg-gray-800 w-full">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
+            <p className="text-lg text-gray-700 dark:text-gray-300">
+                {rental.description}
+            </p>
+        </div>
+
+        <PurchaseModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSubmit={handleModalSubmit}
+        />
+    </div>
+);
+
+};
+
