@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
+import toast from 'react-hot-toast'; // Import toast
 
 export default function PurchaseDetail() {
     const { id } = useParams();
@@ -44,20 +45,20 @@ export default function PurchaseDetail() {
                     'Content-Type': 'application/json'
                 }
             });
-            alert('Purchase payment initiated successfully!');
+            toast.success('Purchase payment initiated successfully!'); // Show success toast
             console.log(response.data);
         } catch (error) {
             console.error('Full error object:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
                 console.error('Response status:', error.response.status);
-                alert(`Purchase payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
+                toast.error(`Purchase payment initiation failed: ${error.response.data.message || 'Unknown error'}`); // Show error toast
             } else if (error.request) {
                 console.error('Request made but no response received:', error.request);
-                alert('No response received from server. Please try again later.');
+                toast.error('No response received from server. Please try again later.'); // Show error toast
             } else {
                 console.error('Error setting up request:', error.message);
-                alert('An error occurred while setting up the request.');
+                toast.error('An error occurred while setting up the request.'); // Show error toast
             }
         }
     };
