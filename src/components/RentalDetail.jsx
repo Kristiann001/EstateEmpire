@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default function RentalDetail() {
+export default function RentedDetail() {
     const { id } = useParams();
     const [rental, setRental] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log(token);
         axios.get(`https://estateempire-backend.onrender.com/properties/for-rent/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -27,11 +28,11 @@ export default function RentalDetail() {
             const token = localStorage.getItem('token');
             const payload = {
                 property_id: parseInt(id),
-                amount: parseInt(rental.price),
+                rent_amount: parseInt(rental.price),  
                 phone_number: phoneNumber
             };
             console.log('Payload:', payload);
-
+            
             try {
                 const response = await axios.post('https://estateempire-backend.onrender.com/rentals', payload, {
                     headers: {
@@ -39,14 +40,14 @@ export default function RentalDetail() {
                         'Content-Type': 'application/json'
                     }
                 });
-                alert('Rent payment initiated successfully!');
+                alert('Rent initiated successfully!');
                 console.log(response.data);
             } catch (error) {
                 console.error('Full error object:', error);
                 if (error.response) {
                     console.error('Response data:', error.response.data);
                     console.error('Response status:', error.response.status);
-                    alert(`Rent payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
+                    alert(`Rent initiation failed: ${error.response.data.message || 'Unknown error'}`);
                 } else if (error.request) {
                     console.error('Request made but no response received:', error.request);
                     alert('No response received from server. Please try again later.');
@@ -90,6 +91,21 @@ export default function RentalDetail() {
                     {rental.description}
                 </p>
             </div>
+
+            <section className="location" style={{ width: '80%', margin: 'auto', padding: '80px 0' }}>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.364476462935!2d36.79054473089192!3d-1.268124626700715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f173c0a1f9de7%3A0xad2c84df1f7f2ec8!2sWestlands%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1723993461840!5m2!1sen!2ske" 
+                    width="100%" 
+                    height="450" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade">
+                </iframe>
+            </section>
         </div>
     );
 }
+
+
+
