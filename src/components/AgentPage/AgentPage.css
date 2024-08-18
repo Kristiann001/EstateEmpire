@@ -205,3 +205,8 @@ td img {
 .table img {
     border-radius: 5px;
 }
+
+.form-group-row {
+    display: flex;
+    gap: 150px; /* Space between form groups */
+}

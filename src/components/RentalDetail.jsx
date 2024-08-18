@@ -4,7 +4,7 @@ import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
 import toast from 'react-hot-toast'; // Import toast
 
-export default function RentalDetail() {
+export default function RentedDetail() {
     const { id } = useParams();
     const [rental, setRentals] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);

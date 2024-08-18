@@ -85,6 +85,7 @@ export default function PurchaseDetail() {
                         onClick={handlePurchase}
                     >
                         Buy
+                        Buy
                     </button>
                 </div>
             </div>
@@ -104,3 +105,4 @@ export default function PurchaseDetail() {
         </div>
     );
 }
+
