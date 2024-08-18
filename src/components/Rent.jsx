@@ -33,20 +33,26 @@ export default function Rent() {
             </div>
             <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8">
                 {filteredRentals.map((rental, index) => (
-                    <Link to={`/rental/${rental.id}`} key={index} className="m-4 w-full sm:w-80 md:w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <Link 
+                        to={`/rental/${rental.id}`} 
+                        key={index} 
+                        className="m-4 w-full sm:w-80 md:w-64 lg:w-72 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                    >
                         <img
-                            className="rounded-t-lg w-full h-48 sm:h-64 object-cover"
+                            className="rounded-t-lg w-full h-48 sm:h-56 md:h-64 object-cover"
                             src={rental.image}
                             alt={rental.name}
                         />
                         <div className="p-4">
-                            <h5 className="mb-2 text-lg sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h5 className="mb-2 text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {rental.name}
                             </h5>
                             <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
                                 {rental.location}
                             </p>
-                            <p className="font-semibold text-gray-700">Ksh {rental.price}</p>
+                            <p className="font-semibold text-gray-700 dark:text-gray-300">
+                                Ksh {rental.price}
+                            </p>
                         </div>
                     </Link>
                 ))}
