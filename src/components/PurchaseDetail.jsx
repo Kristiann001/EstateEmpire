@@ -28,11 +28,11 @@ export default function RentedDetail() {
             const token = localStorage.getItem('token');
             const payload = {
                 property_id: parseInt(id),
-                rent_amount: parseInt(rental.price),  // assuming price represents the rent amount
+                rent_amount: parseInt(rental.price),  
                 phone_number: phoneNumber
             };
             console.log('Payload:', payload);
-            
+           
             try {
                 const response = await axios.post('http://127.0.0.1:5000/rentals', payload, {
                     headers: {
@@ -66,17 +66,17 @@ export default function RentedDetail() {
     return (
         <div className="flex flex-col p-10 space-y-4">
             <div className="flex space-x-4">
-                <img 
-                    className="object-cover w-1/2 rounded-lg" 
-                    src={rental.image} 
-                    alt={rental.name} 
+                <img
+                    className="object-cover w-1/2 rounded-lg"
+                    src={rental.image}
+                    alt={rental.name}
                 />
 
                 <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800" style={{ width: 'calc(50% - 4px)' }}>
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
                     <p className="text-xl font-semibold">{rental.location}</p>
                     <p className="py-10 text-xl font-semibold">Ksh {rental.price}</p>
-                    <button 
+                    <button
                         className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
                         onClick={handleRent}
                     >
@@ -91,6 +91,18 @@ export default function RentedDetail() {
                     {rental.description}
                 </p>
             </div>
+
+            <section className="location" style={{ width: '80%', margin: 'auto', padding: '80px 0' }}>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.364476462935!2d36.79054473089192!3d-1.268124626700715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f173c0a1f9de7%3A0xad2c84df1f7f2ec8!2sWestlands%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1723993461840!5m2!1sen!2ske"
+                    width="600"
+                    height="450"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade">
+                </iframe>
+            </section>
         </div>
     );
 }
