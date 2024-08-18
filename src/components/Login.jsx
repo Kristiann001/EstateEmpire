@@ -30,29 +30,34 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('https://estateempire-backend.onrender.com/login', {
+      const response = await fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
-        console.log(result)
-        localStorage.setItem('token', result.access_token); 
-        localStorage.setItem('email', data.email); 
-        localStorage.setItem('role', result?.user?.role )
-        setIsLoggedIn(true); 
-        setLoggedInEmail(data.email); 
+        localStorage.setItem('token', result.access_token);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('role', result?.user?.role);
+        setIsLoggedIn(true);
+        setLoggedInEmail(data.email);
         navigate('/');
       } else {
         const result = await response.json();
-        console.error(result.message);
+        if (result.message === 'Please verify your email before logging in.') {
+          navigate('/verify-email', { state: { email: data.email } });
+        } else {
+          console.error(result.message);
+          setError(result.message);
+        }
       }
     } catch (error) {
       console.error('Login failed:', error.message);
+      setError('Login failed. Please try again.');
     }
   };
 

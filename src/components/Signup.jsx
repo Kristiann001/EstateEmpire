@@ -42,7 +42,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('https://estateempire-backend.onrender.com/signup', {
+      const response = await fetch('http://127.0.0.1:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,11 +50,9 @@ const Signup = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        if (data.role === 'Agent') {
-          navigate('/agent-page'); // Redirect to Agent page
-        } else if (data.role === 'Client') {
-          navigate('/client-page'); // Redirect to Client page
-        }
+        const result = await response.json();
+        // Redirect to email verification page
+        navigate('/verify-email', { state: { email: data.email } });
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
