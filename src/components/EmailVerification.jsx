@@ -76,9 +76,11 @@ const EmailVerification = () => {
             </div>
           </form>
         </div>
+
       </div>
     </div>
   );
 };
 
 export default EmailVerification;
+

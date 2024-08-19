@@ -141,6 +141,7 @@ export default function Navbar() {
               )}
             </li>
             <li className="mt-4 md:mt-0 md:ml-20 text-xl relative">
+
               <div onClick={toggleHoldingsDropdown} className="nav-link cursor-pointer">
                 Holdings
               </div>

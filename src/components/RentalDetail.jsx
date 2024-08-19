@@ -41,6 +41,7 @@ export default function RentedDetail() {
 
         try {
             const response = await axios.post('https://estateempire-backend.onrender.com/rentals', payload, {
+
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

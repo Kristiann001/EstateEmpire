@@ -3,6 +3,7 @@ import axios from 'axios';
 import formatPrice from './utilis';
 import { useNavigate } from 'react-router-dom';
 
+
 function Purchased() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ function Purchased() {
 
 fetchPurchases();
   }, [navigate]);
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;

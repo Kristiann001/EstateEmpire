@@ -4,6 +4,7 @@ import { format, addDays, differenceInDays } from 'date-fns';
 import formatPrice from './utilis';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
+
 function Rented() {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);

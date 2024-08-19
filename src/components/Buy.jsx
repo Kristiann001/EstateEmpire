@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import formatPrice from './utilis';
 
 export default function Buy() {
     const [purchases, setPurchases] = useState([]);
@@ -50,9 +51,7 @@ export default function Buy() {
                             <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
                                 {purchase.location}
                             </p>
-                            <p className="font-semibold text-gray-700 dark:text-gray-300">
-                                Ksh {purchase.price}
-                            </p>
+                            <p className="font-semibold text-gray-700">Ksh {formatPrice(purchase.price)}</p>
                         </div>
                     </Link>
                 ))}
