@@ -236,7 +236,7 @@ const AgentPage = () => {
                 </form>
             </div>
             <div className="listings-table">
-                <h2 className="listings-title">My Listings</h2>
+                <h2 className="listings-title text-white font-bold">My Listings</h2>
                 <table>
                     <thead>
                         <tr>

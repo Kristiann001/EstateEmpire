@@ -51,16 +51,25 @@ const Signup = () => {
         },
         body: JSON.stringify(data),
       });
+      const result = await response.json();
+      
       if (response.ok) {
-        const result = await response.json();
-        // Redirect to email verification page
-        navigate('/verify-email', { state: { email: data.email } });
-        toast.success('Account created successfully!');
+        toast.success('Account created successfully! Please verify your email.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         // Delay navigation to ensure toast is visible
+        setTimeout(() => {
+          navigate('/verify-email', { state: { email: data.email } });
+        }, 2000);
       } else {
-        const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
-        toast.error(result.message || 'Failed to create account'); 
+        toast.error(result.message || 'Failed to create account');
       }
     } catch (error) {
       setErrorMessage('An error occurred while creating the account.');
@@ -69,7 +78,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
+    <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://imgs.search.brave.com/C8KEZghPBjfBUrq3oZN2bKJLUneofRUtr4VhcPQoo9U/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAyLzkyLzkwLzU2/LzM2MF9GXzI5Mjkw/NTY2N195RlVKTkpQ/bmdZZVJObHJSTDRo/QXBIV3h1WXlSWTRr/Ti5qcGc')" }}>
       <ToastContainer />
       <div className="flex justify-center items-center min-h-screen p-4">
         <div className="bg-white bg-opacity-80 shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-md mx-auto">

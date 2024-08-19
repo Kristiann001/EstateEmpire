@@ -23,7 +23,7 @@ export default function Rent() {
 
     return (
         <>
-            <div className="flex justify-center pt-8 px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center pt-8 px-4 sm:px-6 lg:px-8 bg-gray-200">
                 <input
                     type="text"
                     placeholder="Search for rentals..."
@@ -32,7 +32,7 @@ export default function Rent() {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8 bg-gray-200">
                 {filteredRentals.map((rental, index) => (
                     <Link 
                         to={`/rental/${rental.id}`} 

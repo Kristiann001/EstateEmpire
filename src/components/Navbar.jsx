@@ -134,7 +134,8 @@ export default function Navbar() {
           to="/login"
           className="btn btn-primary"
         >
-          Sign Up/Login
+          Sign Up/
+          Login
         </NavLink>
       ) : (
         <div className="relative">
