@@ -11,7 +11,7 @@ function Purchased() {
     const fetchPurchases = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/purchases', {
+        const response = await axios.get('https://estateempire-backend.onrender.com/purchases', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

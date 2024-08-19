@@ -13,7 +13,7 @@ export default function PurchaseDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`http://127.0.0.1:5000/properties/for-sale/${id}`, {
+        axios.get(`https://estateempire-backend.onrender.com/properties/for-sale/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -41,7 +41,7 @@ export default function PurchaseDetail() {
         console.log('Payload:', payload);
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/purchases', payload, {
+            const response = await axios.post('https://estateempire-backend.onrender.com/purchases', payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

@@ -12,7 +12,7 @@ function Rented() {
     const fetchRentals = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/rentals', {
+        const response = await axios.get('https://estateempire-backend.onrender.com/rentals', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
