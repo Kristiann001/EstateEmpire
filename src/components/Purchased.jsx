@@ -1,32 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import formatPrice from './utilis';
+import { useNavigate } from 'react-router-dom';
+
 
 function Purchased() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPurchases = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/purchases', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setPurchases(response.data.purchases);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching purchases:', err);
-        setError('Failed to fetch purchases. Please try again later.');
-        setLoading(false);
-      }
-    };
+      const token = localStorage.getItem('token');
 
-    fetchPurchases();
-  }, []);
+      // Check if token exists
+      if (!token) {
+        // If no token, redirect to login page
+        navigate('/login');
+        return;
+      }
+
+  try {
+    const response = await axios.get('https://estateempire-backend.onrender.com/purchases', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    setPurchases(response.data.purchases);
+    setLoading(false);
+  } catch (err) {
+    console.error('Error fetching Purchases:', err);
+    if (err.response && err.response.status === 401) {
+      // If unauthorized, redirect to login page
+      navigate('/login');
+    } else {
+      setError('Failed to fetch Purchases. Please try again later.');
+      setLoading(false);
+    }
+  }
+};
+
+fetchPurchases();
+  }, [navigate]);
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;

@@ -140,7 +140,8 @@ export default function Navbar() {
                 </ul>
               )}
             </li>
-            <li className="ml-20 text-xl relative">
+            <li className="mt-4 md:mt-0 md:ml-20 text-xl relative">
+
               <div onClick={toggleHoldingsDropdown} className="nav-link cursor-pointer">
                 Holdings
               </div>

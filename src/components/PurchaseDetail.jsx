@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
 import formatPrice from './utilis';
-import toast from 'react-hot-toast'; // Import toast
+import toast from 'react-hot-toast';
+
 
 
 export default function PurchaseDetail() {
@@ -13,7 +14,7 @@ export default function PurchaseDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`http://127.0.0.1:5000/properties/for-sale/${id}`, {
+        axios.get(`https://estateempire-backend.onrender.com/properties/for-sale/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -41,7 +42,7 @@ export default function PurchaseDetail() {
         console.log('Payload:', payload);
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/purchases', payload, {
+            const response = await axios.post('https://estateempire-backend.onrender.com/purchases', payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -103,11 +104,12 @@ export default function PurchaseDetail() {
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleModalSubmit}
             />
-            <section className="location" style={{ width: '80%', margin: 'auto', padding: '80px 0' }}>
+
+            <section className="location w-full sm:w-3/4 lg:w-2/3 mx-auto py-8">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.364476462935!2d36.79054473089192!3d-1.268124626700715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f173c0a1f9de7%3A0xad2c84df1f7f2ec8!2sWestlands%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1723993461840!5m2!1sen!2ske"
-                    width="1000"
-                    height="450"
+                    className="w-full h-64 md:h-96"
+
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
@@ -117,4 +119,3 @@ export default function PurchaseDetail() {
         </div>
     );
 }
-
