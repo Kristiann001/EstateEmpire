@@ -2,17 +2,27 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format, addDays, differenceInDays } from 'date-fns';
 import formatPrice from './utilis';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Rented() {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchRentals = async () => {
+      const token = localStorage.getItem('token');
+
+      // Check if token exists
+      if (!token) {
+        // If no token, redirect to login page
+        navigate('/login');
+        return;
+      }
+
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/rentals', {
+        const response = await axios.get('https://estateempire-backend.onrender.com/rentals', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -21,13 +31,18 @@ function Rented() {
         setLoading(false);
       } catch (err) {
         console.error('Error fetching rentals:', err);
-        setError('Failed to fetch rentals. Please try again later.');
-        setLoading(false);
+        if (err.response && err.response.status === 401) {
+          // If unauthorized, redirect to login page
+          navigate('/login');
+        } else {
+          setError('Failed to fetch rentals. Please try again later.');
+          setLoading(false);
+        }
       }
     };
 
     fetchRentals();
-  }, []);
+  }, [navigate]);
 
   const calculateCountdown = (rentedDate) => {
     const dueDate = addDays(new Date(rentedDate), 30);
