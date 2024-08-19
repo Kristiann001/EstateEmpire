@@ -1,7 +1,10 @@
+/* Base styles */
 .agent-page {
     font-family: Arial, sans-serif;
+    padding: 20px;
 }
 
+/* Navbar styles */
 .navbar {
     background-color: #007bff;
     padding: 10px;
@@ -15,6 +18,7 @@
     font-weight: bold;
 }
 
+/* Form container styles */
 .form-container {
     padding: 20px;
     margin: 20px auto;
@@ -24,6 +28,15 @@
     background: #f9f9f9;
 }
 
+@media (max-width: 768px) {
+    .form-container {
+        padding: 15px;
+        margin: 15px auto;
+        max-width: 90%;
+    }
+}
+
+/* Form group styles */
 .form-group {
     margin-bottom: 15px;
 }
@@ -43,6 +56,14 @@
     border-radius: 4px;
 }
 
+@media (max-width: 768px) {
+    .form-group input,
+    .form-group select {
+        padding: 6px;
+    }
+}
+
+/* Button styles */
 button.btn {
     background-color: #007bff;
     color: white;
@@ -57,6 +78,7 @@ button.btn:hover {
     background-color: #0056b3;
 }
 
+/* Tab container and indicator styles */
 .tab-container {
     display: flex;
     justify-content: center;
@@ -67,6 +89,13 @@ button.btn:hover {
     border-radius: 8px;
     max-width: 600px;
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .tab-container {
+        flex-direction: column;
+        padding: 5px;
+    }
 }
 
 .tab {
@@ -91,6 +120,13 @@ button.btn:hover {
     transition: transform 0.3s ease;
 }
 
+@media (max-width: 768px) {
+    .indicator {
+        width: 50%;
+    }
+}
+
+/* Listings table styles */
 .listings-table {
     margin: 20px auto;
     max-width: 90%;
@@ -102,6 +138,12 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 0.875rem;
+    }
 }
 
 table, th, td {
@@ -124,72 +166,14 @@ td img {
     height: auto;
 }
 
-td .fa-icon {
-    margin-right: 5px;
-    vertical-align: middle;
-}
-.tab-container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    position: relative;
-    padding: 3px;
-    background-color: #ebebec;
-    border-radius: 9px;
-    margin: 10px 20px 0px 20px;
-  }
-  
-  .indicator {
-    content: "";
-    width: 50%;
-    height: 35px;
-    background:white;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    z-index: 9;
-    border: 0.5px solid rgba(0, 0, 0, 0.04);
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
-    border-radius: 7px;
-    transition: all 0.2s ease-out;
-  }
-  
-  .tab {
-    width: 50%;
-    height: 30px;
-    position: relative;
-    z-index: 99;
-    background-color: transparent;
-    border: 0;
-    outline: none;
-    flex: none;
-    align-self: stretch;
-    flex-grow: 1;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  .tab--1:hover ~ .indicator {
-    left: 2px;
-  }
-  
-  .tab--2:hover ~ .indicator {
-    left: calc(50% - 2px);
-  }
-  /* Header styles */
-.form-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
+/* Responsive table images */
+@media (max-width: 768px) {
+    td img {
+        max-width: 75px;
+    }
 }
 
-.listings-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-/* Input icon styles */
+/* Button and input icon styles */
 .input-icon-group {
     display: flex;
     align-items: center;
@@ -197,20 +181,6 @@ td .fa-icon {
 
 .input-icon {
     margin-right: 8px;
-}
-
-/* Button and table styles */
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #0056b3;
 }
 
 .btn-delete {
@@ -234,4 +204,9 @@ td .fa-icon {
 
 .table img {
     border-radius: 5px;
+}
+
+.form-group-row {
+    display: flex;
+    gap: 150px; /* Space between form groups */
 }

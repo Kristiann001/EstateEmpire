@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
 import formatPrice from './utilis';
+import toast from 'react-hot-toast';
 
-export default function RentalDetail() {
+export default function RentedDetail() {
     const { id } = useParams();
     const [rental, setRental] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,20 +46,20 @@ export default function RentalDetail() {
                     'Content-Type': 'application/json'
                 }
             });
-            alert('Rental payment initiated successfully!');
+            toast.success('Rent payment initiated successfully!'); // Show success toast
             console.log(response.data);
         } catch (error) {
             console.error('Full error object:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
                 console.error('Response status:', error.response.status);
-                alert(`Rental payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
+                toast.error(`Rent payment initiation failed: ${error.response.data.message || 'Unknown error'}`); // Show error toast
             } else if (error.request) {
                 console.error('Request made but no response received:', error.request);
-                alert('No response received from server. Please try again later.');
+                toast.error('No response received from server. Please try again later.'); // Show error toast
             } else {
                 console.error('Error setting up request:', error.message);
-                alert('An error occurred while setting up the request.');
+                toast.error('An error occurred while setting up the request.'); // Show error toast
             }
         }
     };
@@ -68,18 +69,18 @@ export default function RentalDetail() {
     }
 
     return (
-        <div className="flex flex-col p-10 space-y-4">
-            <div className="flex space-x-4">
+        <div className="flex flex-col p-4 sm:p-6 md:p-10 space-y-4">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                 <img
-                    className="object-cover w-1/2 rounded-lg"
+                    className="object-cover w-full md:w-1/2 rounded-lg"
                     src={rental.image}
                     alt={rental.name}
                 />
 
-                <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800" style={{ width: 'calc(50% - 4px)' }}>
+                <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 w-full md:w-1/2">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
                     <p className="text-xl font-semibold">{rental.location}</p>
-                    <p className="py-10 text-xl font-semibold">Ksh {formatPrice(rental.price)}</p>
+                    <p className="py-4 md:py-10 text-xl font-semibold">Ksh {formatPrice(rental.price)}</p>
                     <button
                         className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
                         onClick={handleRental}
@@ -89,7 +90,7 @@ export default function RentalDetail() {
                 </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg shadow p-6 dark:border-gray-700 dark:bg-gray-800 w-full">
+            <div className="bg-white border border-gray-200 rounded-lg shadow p-4 sm:p-6 dark:border-gray-700 dark:bg-gray-800 w-full">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
                 <p className="text-lg text-gray-700 dark:text-gray-300">
                     {rental.description}

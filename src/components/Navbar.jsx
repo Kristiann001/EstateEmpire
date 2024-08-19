@@ -8,28 +8,22 @@ export default function Navbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInEmail, setLoggedInEmail] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
   const navigate = useNavigate();
   const location = useLocation();
-  
 
   const checkLoginStatus = () => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
-    const role = localStorage.getItem('role');
-  
 
     if (token && email) {
       setIsLoggedIn(true);
       setLoggedInEmail(email);
-      
     } else {
       setIsLoggedIn(false);
       setLoggedInEmail('');
-    
     }
   };
-
-  
 
   useEffect(() => {
     checkLoginStatus();
@@ -46,7 +40,6 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
-    localStorage.removeItem('role')
     checkLoginStatus();
     closeDropdowns();
     navigate('/login');
@@ -55,11 +48,6 @@ export default function Navbar() {
   const togglePropertyDropdown = () => {
     setIsPropertyDropdownOpen(!isPropertyDropdownOpen);
     setIsHoldingsDropdownOpen(false);
-  };
-
-  const toggleHoldingsDropdown = () => {
-    setIsHoldingsDropdownOpen(!isHoldingsDropdownOpen);
-    setIsPropertyDropdownOpen(false);
   };
 
   const toggleUserDropdown = () => {
@@ -72,13 +60,26 @@ export default function Navbar() {
     setIsUserDropdownOpen(false);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    closeDropdowns(); // Close dropdowns when opening mobile menu
+  };
+
   return (
-    <nav className="bg-blue-600 p-12">
+    <nav className="bg-blue-600 p-4">
       <div className="flex flex-wrap items-center justify-between">
         <h1 className="text-4xl font-bold cursor-pointer text-amber-400">
           EstateEmpire
         </h1>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <div className="md:hidden">
+          <button
+            onClick={toggleMobileMenu}
+            className="text-amber-400 focus:outline-none"
+          >
+            &#9776; {/* Hamburger icon */}
+          </button>
+        </div>
+        <div className={`flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse ${isMobileMenuOpen ? 'block' : 'hidden'} md:flex`}>
           {!isLoggedIn ? (
             <NavLink
               to="/login"
@@ -110,14 +111,14 @@ export default function Navbar() {
             </div>
           )}
         </div>
-        <div>
-          <ul className="flex cursor-pointer">
+        <div className={`w-full md:flex md:items-center md:w-auto ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+          <ul className="flex flex-col md:flex-row cursor-pointer mt-4 md:mt-0">
             <li className="text-xl">
               <NavLink to="/" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
                 Home
               </NavLink>
             </li>
-            <li className="ml-20 text-xl relative">
+            <li className="mt-4 md:mt-0 md:ml-20 text-xl relative">
               <div onClick={togglePropertyDropdown} className="nav-link cursor-pointer">
                 Property
               </div>
@@ -155,7 +156,7 @@ export default function Navbar() {
                 </ul>
               )}
             </li>
-            <li className="ml-20 text-xl">
+            <li className="mt-4 md:mt-0 md:ml-20 text-xl">
               <NavLink
                 to="/agent"
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
