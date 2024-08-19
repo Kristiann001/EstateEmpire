@@ -49,7 +49,10 @@ export default function Navbar() {
     setIsPropertyDropdownOpen(!isPropertyDropdownOpen);
     setIsHoldingsDropdownOpen(false);
   };
-
+  const toggleHoldingsDropdown = () => {
+    setIsHoldingsDropdownOpen(!isHoldingsDropdownOpen);
+    setIsPropertyDropdownOpen(false);
+  };
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
