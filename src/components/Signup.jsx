@@ -51,16 +51,25 @@ const Signup = () => {
         },
         body: JSON.stringify(data),
       });
+      const result = await response.json();
+      
       if (response.ok) {
-        const result = await response.json();
-        // Redirect to email verification page
-        navigate('/verify-email', { state: { email: data.email } });
-        toast.success('Account created successfully!');
+        toast.success('Account created successfully! Please verify your email.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         // Delay navigation to ensure toast is visible
+        setTimeout(() => {
+          navigate('/verify-email', { state: { email: data.email } });
+        }, 2000);
       } else {
-        const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');
-        toast.error(result.message || 'Failed to create account'); 
+        toast.error(result.message || 'Failed to create account');
       }
     } catch (error) {
       setErrorMessage('An error occurred while creating the account.');
