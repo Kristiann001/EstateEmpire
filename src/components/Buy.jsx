@@ -23,7 +23,7 @@ export default function Buy() {
 
     return (
         <>
-            <div className="flex justify-center pt-8 px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center pt-8 px-4 sm:px-6 lg:px-8 bg-gray-200">
                 <input
                     type="text"
                     placeholder="Search for buyables..."
@@ -32,7 +32,7 @@ export default function Buy() {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap justify-center pt-8 px-4 sm:px-6 lg:px-8 bg-gray-200">
                 {filteredPurchases.map((purchase, index) => (
                     <Link 
                         to={`/purchase/${purchase.id}`} 

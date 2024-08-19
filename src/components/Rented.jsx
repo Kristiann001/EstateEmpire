@@ -61,7 +61,7 @@ function Rented() {
   if (error) return <div className="text-center mt-8 text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-gray-200">
       <h1 className="text-2xl font-bold mb-4">My Rentals</h1>
       {rentals.length === 0 ? (
         <p>You haven't rented any properties yet.</p>

@@ -2,6 +2,7 @@
 .agent-page {
     font-family: Arial, sans-serif;
     padding: 20px;
+    background-image: url(https://wallpapers.com/images/hd/dream-house-pictures-1800-x-1200-yjphbmq6lkdrikdb.jpg);
 }
 
 /* Navbar styles */
@@ -25,7 +26,7 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     max-width: 600px;
-    background: #f9f9f9;
+    background: rgba(249, 249, 249, 0.8);
 }
 
 @media (max-width: 768px) {
@@ -131,6 +132,7 @@ button.btn:hover {
     margin: 20px auto;
     max-width: 90%;
     overflow-x: auto;
+    
 }
 
 table {
@@ -210,3 +212,4 @@ td img {
     display: flex;
     gap: 150px; /* Space between form groups */
 }
+

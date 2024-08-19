@@ -79,7 +79,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')"}}>
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://imgs.search.brave.com/C8KEZghPBjfBUrq3oZN2bKJLUneofRUtr4VhcPQoo9U/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAyLzkyLzkwLzU2/LzM2MF9GXzI5Mjkw/NTY2N195RlVKTkpQ/bmdZZVJObHJSTDRo/QXBIV3h1WXlSWTRr/Ti5qcGc')"}}>
       <ToastContainer />
       <div className="w-full max-w-md border-2 border-blue-400 rounded-lg p-8 bg-white bg-opacity-80 mx-4 sm:mx-8 md:mx-auto">
         <h2 className="text-center text-lg sm:text-xl font-bold text-black mb-4">Welcome to EstateEmpire</h2>

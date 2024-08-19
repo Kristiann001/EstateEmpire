@@ -49,7 +49,7 @@ fetchPurchases();
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-gray-200">
       <h1 className="text-2xl font-bold mb-4">My Purchases</h1>
       {purchases.length === 0 ? (
         <p>You haven't made any purchases yet.</p>
