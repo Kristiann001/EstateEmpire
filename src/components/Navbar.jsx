@@ -49,7 +49,10 @@ export default function Navbar() {
     setIsPropertyDropdownOpen(!isPropertyDropdownOpen);
     setIsHoldingsDropdownOpen(false);
   };
-
+  const toggleHoldingsDropdown = () => {
+    setIsHoldingsDropdownOpen(!isHoldingsDropdownOpen);
+    setIsPropertyDropdownOpen(false);
+  };
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
@@ -132,6 +135,25 @@ export default function Navbar() {
                   <li className="px-4 py-2 hover:bg-gray-100">
                     <NavLink to="/buy" className="block text-gray-700" onClick={closeDropdowns}>
                       Buy
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
+            </li>
+            <li className="mt-4 md:mt-0 md:ml-20 text-xl relative">
+              <div onClick={toggleHoldingsDropdown} className="nav-link cursor-pointer">
+                Holdings
+              </div>
+              {isHoldingsDropdownOpen && (
+                <ul className="absolute left-0 top-full mt-2 bg-amber-400 shadow-lg rounded-lg z-10">
+                  <li className="px-4 py-2 hover:bg-gray-100">
+                    <NavLink to="/rented" className="block text-gray-700" onClick={closeDropdowns}>
+                      Rented
+                    </NavLink>
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100">
+                    <NavLink to="/purchased" className="block text-gray-700" onClick={closeDropdowns}>
+                      Purchased
                     </NavLink>
                   </li>
                 </ul>
