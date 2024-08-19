@@ -12,7 +12,8 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
+    "date-fns": "^3.6.0",
     "bootstrap": "^5.3.3",
     "flowbite": "^2.5.1",
     "react": "^18.3.1",

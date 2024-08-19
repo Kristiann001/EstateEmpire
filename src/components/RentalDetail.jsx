@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
-import toast from 'react-hot-toast'; // Import toast
+import formatPrice from './utilis';
+import toast from 'react-hot-toast';
 
 export default function RentedDetail() {
     const { id } = useParams();
-    const [rental, setRentals] = useState(null);
+    const [rental, setRental] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -17,14 +18,14 @@ export default function RentedDetail() {
             }
         })
             .then(response => {
-                setRentals(response.data);
+                setRental(response.data);
             })
             .catch(error => {
                 console.error('There was an error fetching the rental details!', error);
             });
     }, [id]);
 
-    const handleRent = () => {
+    const handleRental = () => {
         setIsModalOpen(true);
     };
 
@@ -39,7 +40,7 @@ export default function RentedDetail() {
         console.log('Payload:', payload);
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/rentals', payload, { // Assuming endpoint for rentals is used
+            const response = await axios.post('http://127.0.0.1:5000/rentals', payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -79,10 +80,10 @@ export default function RentedDetail() {
                 <div className="flex flex-col justify-center items-center bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 dark:bg-gray-800 w-full md:w-1/2">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
                     <p className="text-xl font-semibold">{rental.location}</p>
-                    <p className="py-4 md:py-10 text-xl font-semibold">Ksh {rental.price}</p>
+                    <p className="py-4 md:py-10 text-xl font-semibold">Ksh {formatPrice(rental.price)}</p>
                     <button
                         className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700"
-                        onClick={handleRent}
+                        onClick={handleRental}
                     >
                         Rent
                     </button>

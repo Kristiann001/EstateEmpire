@@ -39,16 +39,23 @@ const Login = () => {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem('token', result.access_token); 
-        localStorage.setItem('email', data.email); 
-        localStorage.setItem('role', result.user.role);
-        setIsLoggedIn(true); 
-        setLoggedInEmail(data.email); 
-        
-        // Show success toast with role information
+        localStorage.setItem('token', result.access_token);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('role', result?.user?.role);
+        setIsLoggedIn(true);
+        setLoggedInEmail(data.email);
+        navigate('/');
+      } else {
+        const result = await response.json();
+        if (result.message === 'Please verify your email before logging in.') {
+          navigate('/verify-email', { state: { email: data.email } });
+        } else {
+          const result = await response.json();
+          toast.error(result.message || 'Login failed. Please try again.');
+        }
         toast.success(`Logged in successfully as ${result.user.role}!`, {
           position: "top-right",
           autoClose: 5000,
@@ -58,14 +65,6 @@ const Login = () => {
           draggable: true,
           progress: undefined,
         });
-        
-        // Navigate to the home page after showing the toast
-        setTimeout(() => {
-          navigate('/');
-        }, 700); // Adjust the delay if needed to ensure the toast is visible
-      } else {
-        const result = await response.json();
-        toast.error(result.message || 'Login failed. Please try again.');
       }
     } catch (error) {
       toast.error('Login failed: ' + error.message);

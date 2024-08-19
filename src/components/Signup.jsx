@@ -52,9 +52,11 @@ const Signup = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        const result = await response.json();
+        // Redirect to email verification page
+        navigate('/verify-email', { state: { email: data.email } });
         toast.success('Account created successfully!');
         // Delay navigation to ensure toast is visible
-        setTimeout(() => navigate('/login'), 2000);
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Failed to create account');

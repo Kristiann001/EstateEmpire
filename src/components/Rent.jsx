@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import formatPrice from './utilis';
 
 export default function Rent() {
     const [rentals, setRentals] = useState([]);
@@ -50,9 +51,7 @@ export default function Rent() {
                             <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
                                 {rental.location}
                             </p>
-                            <p className="font-semibold text-gray-700 dark:text-gray-300">
-                                Ksh {rental.price}
-                            </p>
+                            <p className="font-semibold text-gray-700 dark:text-gray-300">Ksh {formatPrice(rental.price)}</p>
                         </div>
                     </Link>
                 ))}
