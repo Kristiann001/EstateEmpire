@@ -22,7 +22,7 @@ function Purchased() {
       }
 
   try {
-    const response = await axios.get('https://estateempire-backend.onrender.com/purchases', {
+    const response = await axios.get('https://estateempire-backend-1.onrender.com/purchases', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

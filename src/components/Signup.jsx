@@ -44,7 +44,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('https://estateempire-backend.onrender.com/signup', {
+      const response = await fetch('https://estateempire-backend-1.onrender.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

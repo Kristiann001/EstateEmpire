@@ -23,7 +23,7 @@ function Rented() {
       }
 
       try {
-        const response = await axios.get('https://estateempire-backend.onrender.com/rentals', {
+        const response = await axios.get('https://estateempire-backend-1.onrender.com/rentals', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

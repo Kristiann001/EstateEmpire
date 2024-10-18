@@ -8,7 +8,7 @@ export default function Rent() {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        axios.get('https://estateempire-backend.onrender.com/properties/for-rent')
+        axios.get('https://estateempire-backend-1.onrender.com/properties/for-rent')
             .then(response => {
                 setRentals(response.data);
             })

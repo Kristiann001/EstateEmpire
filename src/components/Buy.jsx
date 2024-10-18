@@ -8,7 +8,7 @@ export default function Buy() {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        axios.get('https://estateempire-backend.onrender.com/properties/for-sale')
+        axios.get('https://estateempire-backend-1.onrender.com/properties/for-sale')
             .then(response => {
                 setPurchases(response.data);
             })
