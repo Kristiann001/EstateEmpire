@@ -2,28 +2,26 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format, addDays, differenceInDays } from 'date-fns';
 import formatPrice from './utilis';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
+import { useNavigate } from 'react-router-dom';
+import { FaHome, FaMapMarkerAlt, FaCalendarAlt, FaClock, FaCheckCircle } from 'react-icons/fa';
 
 function Rented() {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRentals = async () => {
       const token = localStorage.getItem('token');
 
-      // Check if token exists
       if (!token) {
-        // If no token, redirect to login page
         navigate('/login');
         return;
       }
 
       try {
-        const response = await axios.get('https://estateempire-backend-1.onrender.com/rentals', {
+        const response = await axios.get('http://localhost:5000/rentals', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -33,7 +31,6 @@ function Rented() {
       } catch (err) {
         console.error('Error fetching rentals:', err);
         if (err.response && err.response.status === 401) {
-          // If unauthorized, redirect to login page
           navigate('/login');
         } else {
           setError('Failed to fetch rentals. Please try again later.');
@@ -51,50 +48,116 @@ function Rented() {
     const daysLeft = differenceInDays(dueDate, today);
 
     if (daysLeft < 0) {
-      return "Rent due";
+      return { text: "Rent due", status: "overdue" };
+    } else if (daysLeft <= 5) {
+      return { text: `${daysLeft} days left`, status: "warning" };
     } else {
-      return `${daysLeft} days left`;
+      return { text: `${daysLeft} days left`, status: "good" };
     }
   };
 
-  if (loading) return <div className="text-center mt-8">Loading...</div>;
-  if (error) return <div className="text-center mt-8 text-red-500">{error}</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-24">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-24">
+        <div className="text-center">
+          <p className="text-red-500 text-lg">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-4 bg-gray-200">
-      <h1 className="text-2xl font-bold mb-4">My Rentals</h1>
-      {rentals.length === 0 ? (
-        <p>You haven't rented any properties yet.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 text-left text-sm font-medium">Property Name</th>
-                <th className="py-2 px-4 text-left text-sm font-medium">Location</th>
-                <th className="py-2 px-4 text-left text-sm font-medium">Price</th>
-                <th className="py-2 px-4 text-left text-sm font-medium">Rented Date</th>
-                <th className="py-2 px-4 text-left text-sm font-medium">Next Payment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rentals.map((rental) => (
-                <tr key={rental.id} className="border-b hover:bg-gray-50">
-                  <td className="py-2 px-4 text-sm">{rental.property.name}</td>
-                  <td className="py-2 px-4 text-sm">{rental.property.location}</td>
-                  <td className="py-2 px-4 text-sm">Ksh {formatPrice(rental.property.price)}</td>
-                  <td className="py-2 px-4 text-sm">{format(new Date(rental.rented_at), 'PP')}</td>
-                  <td className="py-2 px-4 text-sm">
-                    <span className={`font-semibold ${calculateCountdown(rental.rented_at) === "Rent due" ? "text-red-500" : "text-green-500"}`}>
-                      {calculateCountdown(rental.rented_at)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="min-h-screen bg-gray-50 pt-24 pb-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-900 font-outfit mb-2">My Rentals</h1>
+          <p className="text-gray-500">Track your active rental properties and payment schedules</p>
         </div>
-      )}
+
+        {rentals.length === 0 ? (
+          <div className="bg-white rounded-3xl p-16 text-center border-2 border-dashed border-gray-200">
+            <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <FaHome className="text-3xl text-indigo-600" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2 font-outfit">No Active Rentals</h3>
+            <p className="text-gray-500 mb-6">You haven't rented any properties yet.</p>
+            <button
+              onClick={() => navigate('/rent')}
+              className="btn-premium bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/30"
+            >
+              Browse Rentals
+            </button>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rentals.map((rental) => {
+              const countdown = calculateCountdown(rental.rented_at);
+              return (
+                <div key={rental.id} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 group">
+                  <div className="relative h-48">
+                    <img
+                      src={rental.property.image || "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1470&auto=format&fit=crop"}
+                      alt={rental.property.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full uppercase tracking-wider">
+                        Active
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 font-outfit">{rental.property.name}</h3>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <FaMapMarkerAlt className="text-indigo-600" />
+                        <span>{rental.property.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <FaCalendarAlt className="text-indigo-600" />
+                        <span>Started {format(new Date(rental.rented_at), 'PP')}</span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-gray-100 pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs text-gray-400 uppercase font-bold">Monthly Rent</span>
+                        <span className="text-lg font-bold text-indigo-600">KSh {formatPrice(rental.property.price)}</span>
+                      </div>
+                      
+                      <div className={`flex items-center gap-2 p-3 rounded-2xl ${
+                        countdown.status === 'overdue' ? 'bg-red-50' : 
+                        countdown.status === 'warning' ? 'bg-yellow-50' : 'bg-green-50'
+                      }`}>
+                        <FaClock className={`${
+                          countdown.status === 'overdue' ? 'text-red-600' : 
+                          countdown.status === 'warning' ? 'text-yellow-600' : 'text-green-600'
+                        }`} />
+                        <span className={`text-sm font-bold ${
+                          countdown.status === 'overdue' ? 'text-red-600' : 
+                          countdown.status === 'warning' ? 'text-yellow-600' : 'text-green-600'
+                        }`}>
+                          {countdown.text}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

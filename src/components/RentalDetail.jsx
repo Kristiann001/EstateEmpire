@@ -4,6 +4,7 @@ import axios from 'axios';
 import PurchaseModal from './PurchaseModal';
 import formatPrice from './utilis';
 import toast from 'react-hot-toast';
+import { FaMapMarkerAlt, FaBed, FaBath, FaClock, FaCheckCircle } from 'react-icons/fa';
 
 export default function RentedDetail() {
     const { id } = useParams();
@@ -12,7 +13,7 @@ export default function RentedDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`https://estateempire-backend-1.onrender.com/properties/for-rent/${id}`, {
+        axios.get(`http://localhost:5000/properties/for-rent/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -37,85 +38,159 @@ export default function RentedDetail() {
             amount: parseInt(rental.price),
             phone_number: phoneNumber
         };
-        console.log('Payload:', payload);
 
         try {
-            const response = await axios.post('https://estateempire-backend-1.onrender.com/rentals', payload, {
-
+            await axios.post('http://localhost:5000/rentals', payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
-            toast.success('Rent payment initiated successfully!');
-            console.log(response.data);
+            toast.success('Rental initiated! Check your phone.');
         } catch (error) {
-            console.error('Full error object:', error);
-            if (error.response) {
-                console.error('Response data:', error.response.data);
-                console.error('Response status:', error.response.status);
-                toast.error(`Rent payment initiation failed: ${error.response.data.message || 'Unknown error'}`);
-            } else if (error.request) {
-                console.error('Request made but no response received:', error.request);
-                toast.error('No response received from server. Please try again later.');
-            } else {
-                console.error('Error setting up request:', error.message);
-                toast.error('An error occurred while setting up the request.');
-            }
+            toast.error(error.response?.data?.message || 'Rental initiation failed.');
         }
     };
 
     if (!rental) {
-        return <div className="text-center mt-8 text-gray-700">Loading...</div>;
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            </div>
+        );
     }
 
     return (
-        <div className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://assets-news.housing.com/news/wp-content/uploads/2021/10/28230258/Best-colours-for-home-outside-shutterstock_346448522.jpg')" }}>
-            <div className="flex flex-col p-4 sm:p-6 md:p-10 space-y-6 max-w-5xl mx-auto">
-                <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-                    <img
-                        className="object-cover w-full md:w-1/2 rounded-lg shadow-lg"
-                        src={rental.image}
-                        alt={rental.name}
-                    />
+        <div className="bg-gray-50 min-h-screen pb-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+                <div className="grid lg:grid-cols-2 gap-12">
+                    {/* Left: Image Section */}
+                    <div className="animate-fade-in">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+                            <img
+                                className="w-full h-full object-cover"
+                                src={rental.image || "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1470&auto=format&fit=crop"}
+                                alt={rental.name}
+                            />
+                        </div>
+                        
+                        {/* Highlights */}
+                        <div className="mt-8 grid grid-cols-3 gap-4">
+                            <div className="bg-white p-4 rounded-2xl text-center border border-gray-100">
+                                <FaCheckCircle className="text-green-500 mx-auto mb-2" />
+                                <p className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Verified</p>
+                            </div>
+                            <div className="bg-white p-4 rounded-2xl text-center border border-gray-100">
+                                <FaClock className="text-indigo-500 mx-auto mb-2" />
+                                <p className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Available</p>
+                            </div>
+                            <div className="bg-white p-4 rounded-2xl text-center border border-gray-100">
+                                <FaShieldAlt className="text-blue-500 mx-auto mb-2" />
+                                <p className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Secure</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 dark:bg-gray-800 w-full md:w-1/2 p-6">
-                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{rental.name}</h3>
-                        <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">{rental.location}</p>
-                        <p className="py-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">Ksh {formatPrice(rental.price)}</p>
-                        <button
-                            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
-                            onClick={handleRental}
-                        >
-                            Rent
-                        </button>
+                    {/* Right: Info Section */}
+                    <div className="flex flex-col justify-between animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                        <div>
+                            <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full uppercase tracking-wider mb-4 inline-block border border-indigo-100">
+                                Premium Rental
+                            </span>
+                            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-outfit">{rental.name}</h1>
+                            <div className="flex items-center gap-2 text-gray-500 mb-8">
+                                <FaMapMarkerAlt className="text-indigo-600" />
+                                <span className="text-lg">{rental.location}</span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-6 mb-8">
+                                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                                    <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl"><FaBed /></div>
+                                    <div>
+                                        <p className="text-xs text-gray-400 uppercase font-medium">Bedrooms</p>
+                                        <p className="font-bold text-gray-900">{rental.bedrooms || '-'}</p>
+                                    </div>
+                                </div>
+                                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                                    <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl"><FaBath /></div>
+                                    <div>
+                                        <p className="text-xs text-gray-400 uppercase font-medium">Bathrooms</p>
+                                        <p className="font-bold text-gray-900">{rental.bathrooms || '-'}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mb-8">
+                                <h3 className="text-lg font-bold text-gray-900 mb-4 font-outfit">About this rental</h3>
+                                <p className="text-gray-600 leading-relaxed">
+                                    {rental.description}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="glass-card p-6 rounded-3xl flex items-center justify-between border border-white/50 shadow-xl">
+                            <div>
+                                <p className="text-sm text-gray-500 font-medium">Monthly Rent</p>
+                                <p className="text-3xl font-bold text-indigo-600 font-outfit">KSh {formatPrice(rental.price)}</p>
+                            </div>
+                            {(() => {
+                                const role = localStorage.getItem('role');
+                                const isLoggedIn = localStorage.getItem('token');
+                                
+                                if (!isLoggedIn) {
+                                    return (
+                                        <div className="text-center">
+                                            <p className="text-sm text-gray-500 mb-2">Sign in to rent</p>
+                                            <button
+                                                onClick={() => window.location.href = '/login'}
+                                                className="btn-premium bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/30 px-10"
+                                            >
+                                                Login
+                                            </button>
+                                        </div>
+                                    );
+                                }
+                                
+                                if (role !== 'Customer') {
+                                    return (
+                                        <div className="text-center px-6">
+                                            <p className="text-xs text-gray-400 mb-1">Rentals restricted to</p>
+                                            <p className="text-sm font-bold text-gray-600">Customer accounts</p>
+                                        </div>
+                                    );
+                                }
+                                
+                                return (
+                                    <button
+                                        className="btn-premium bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/30 px-10"
+                                        onClick={handleRental}
+                                    >
+                                        Rent Now
+                                    </button>
+                                );
+                            })()}
+                        </div>
                     </div>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 dark:border-gray-700 dark:bg-gray-800">
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Description</h3>
-                    <p className="text-lg text-gray-700 dark:text-gray-300">
-                        {rental.description}
-                    </p>
-                </div>
-
-                <PurchaseModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    onSubmit={handleModalSubmit}
-                />
-
-                <section className="w-full mx-auto py-8">
+                {/* Map Section */}
+                <div className="mt-16 rounded-3xl overflow-hidden border-2 border-white shadow-xl animate-fade-in" style={{ animationDelay: '0.4s' }}>
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.364476462935!2d36.79054473089192!3d-1.268124626700715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f173c0a1f9de7%3A0xad2c84df1f7f2ec8!2sWestlands%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1723993461840!5m2!1sen!2ske"
-                        className="w-full h-64 md:h-96 rounded-lg shadow-lg"
+                        className="w-full h-[400px]"
                         style={{ border: 0 }}
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade">
                     </iframe>
-                </section>
+                </div>
             </div>
+
+            <PurchaseModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleModalSubmit}
+            />
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaPhoneAlt, FaLock } from 'react-icons/fa';
 
 function PurchaseModal({ isOpen, onClose, onSubmit }) {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,34 +13,59 @@ function PurchaseModal({ isOpen, onClose, onSubmit }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-      <div className="bg-white border-2 border-blue-400 p-6 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-8">
-        <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Enter M-Pesa Number</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="Enter M-Pesa number"
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            required
-          />
-          <div className="flex justify-end space-x-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Submit
-            </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm animate-fade-in" onClick={onClose} />
+      
+      {/* Modal Content */}
+      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
+        <div className="p-8">
+          <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.png" alt="M-Pesa" className="w-10 object-contain" />
           </div>
-        </form>
+          
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-2 font-outfit">M-Pesa Payment</h2>
+          <p className="text-gray-500 text-center text-sm mb-8">Enter your M-Pesa registered phone number to receive an STK Push prompt on your phone.</p>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="relative">
+              <FaPhoneAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="07XX XXX XXX"
+                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-700 font-semibold tracking-widest placeholder:tracking-normal placeholder:font-normal"
+                required
+              />
+            </div>
+            
+            <div className="flex items-center gap-2 text-xs text-gray-400 justify-center">
+              <FaLock />
+              <span>Secure encrypted payment</span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                type="submit"
+                className="btn-premium w-full py-4 text-base"
+              >
+                Pay Now
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 text-sm font-medium transition-colors"
+              >
+                Cancel Transaction
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <div className="bg-gray-50 p-4 border-t border-gray-100 italic text-[10px] text-gray-400 text-center">
+          Wait for the M-Pesa prompt on your phone after clicking Pay Now.
+        </div>
       </div>
     </div>
   );

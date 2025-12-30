@@ -11,6 +11,7 @@ import Signup from './components/Signup';
 import EmailVerification from './components/EmailVerification';
 import Rented from './components/Rented';
 import Purchased from './components/Purchased';
+import Profile from './components/Profile';
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path ="/rented" element={<Rented />} />
         <Route path ="/purchased" element= {<Purchased />} />
-
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

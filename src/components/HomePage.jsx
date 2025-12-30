@@ -1,175 +1,136 @@
 import { useNavigate } from 'react-router-dom';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function HomePage() {
   const navigate = useNavigate();
 
-  const goToRentPage = () => {
-    navigate('/rent');
-  };
-
-  const goToBuyPage = () => {
-    navigate('/buy');
-  };
-
   return (
-    <div>
-      <header className="header">
-        <Carousel
-          autoPlay
-          infiniteLoop
-          showThumbs={false}
-          showStatus={false}
-          interval={2200}
-        >
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/featured/beautiful-house-x1yu28g8twzle26l.jpg"
-              alt="House 1"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpaper.dog/large/20504774.jpg"
-              alt="House 2"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/hd/dream-house-pictures-1800-x-1200-yjphbmq6lkdrikdb.jpg"
-              alt="House 3"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/hd/dream-house-pictures-1600-x-1067-bxqijo1xud22np4s.jpg"
-              alt="House 4"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/hd/dream-house-pictures-4454-x-2827-sj7pbfx9tdawduqc.jpg"
-              alt="House 5"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/hd/dream-house-pictures-1920-x-1080-979ccb6wjuizse7c.jpg"
-              alt="House 6"
-            />
-          </div>
-          <div>
-            <img
-              className="object-cover"
-              style={{ width: "100%", height: "auto" }}
-              src="https://wallpapers.com/images/hd/dream-house-pictures-2500-x-1372-sdhybwdznk8wpvra.jpg"
-              alt="House 7"
-            />
-          </div>
-        </Carousel>
-      </header>
+    <div className="bg-white">
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Decorative background Elements */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-blue-50 rounded-full blur-3xl opacity-50 -z-10" />
+        <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[600px] h-[600px] bg-indigo-50 rounded-full blur-3xl opacity-50 -z-10" />
 
-      <main className="p-4 md:p-8">
-        <section>
-          <h1 className='text-center text-black text-4xl font-bold font-sans mb-8'>About Us</h1>
-          <div className='flex flex-col md:flex-row items-center justify-center'>
-            <img
-              className="w-64 h-64 rounded-full mb-4 md:mb-0 md:mr-8"
-              src="https://st2.depositphotos.com/3591429/10778/i/450/depositphotos_107781882-stock-photo-panorama-city-and-buildings.jpg"
-              alt="Company"
-            />
-            <p className='text-center md:text-left md:w-2/3'>
-              EstateEmpire is a comprehensive real estate management application designed to streamline and enhance the property management experience. Whether you are a property owner, manager, or tenant, EstateEmpire offers a user-friendly interface to handle all your real estate needs efficiently. With features that include property listing, tenant management, lease tracking, maintenance requests, and financial reporting, the application ensures that every aspect of property management is covered. EstateEmpire's robust search functionality allows users to find properties for rent or purchase using text and image descriptions, making it easier to connect with potential buyers or renters. Its intuitive design and powerful tools help simplify complex tasks, saving time and improving productivity for all users involved in the real estate market.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center py-20">
+          <div className="animate-fade-in">
+            <span className="inline-block py-1 px-4 rounded-full bg-blue-50 text-blue-600 font-semibold text-sm mb-6 border border-blue-100">
+              Premium Real Estate Platform
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight mb-6 font-outfit">
+              Find Your <span className="text-blue-600">Dream Home</span> in Kenya
+            </h1>
+            <p className="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed">
+              Experience the future of property management. Buy, rent, and manage estates with ease through our secure and modern platform.
             </p>
-          </div>
-        </section>
-
-        <section className='py-8'>
-          <div className='flex flex-col sm:flex-row justify-center gap-8'>
-            <div className="w-full sm:w-80 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                <img
-                  className="h-48 w-full object-cover rounded-t-lg"
-                  src="https://thumbs.dreamstime.com/b/wooden-house-inscription-rent-rental-property-apartments-services-realtor-affordable-housing-prices-real-estate-129678669.jpg"
-                  alt="Rent"
-                />
-              </a>
-              <div className="p-5">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Rentals</h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Renting a property offers flexibility, lower upfront costs, and freedom from maintenance responsibilities. It allows you to move easily for job opportunities or personal reasons, and often includes amenities like gyms and pools. Consider renting to maintain financial flexibility and enjoy hassle-free living.
-                </p>
-                <button
-                  className='px-6 py-2 text-white font-semibold bg-blue-500 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out'
-                  onClick={goToRentPage}
-                >
-                  Rent
-                </button>
-              </div>
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={() => navigate('/buy')}
+                className="btn-premium"
+              >
+                Browse Properties
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+              <button 
+                onClick={() => navigate('/agent')}
+                className="btn-outline-premium"
+              >
+                List Property
+              </button>
             </div>
-            <div className="w-full sm:w-80 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
-                <img
-                  className="h-48 w-full object-cover rounded-t-lg"
-                  src="https://logos.flamingtext.com/City-Logos/Purchase-Amped-Logo.png"
-                  alt="Buy"
-                />
-              </a>
-              <div className="p-5">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Buy a Home</h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Buying a property can be a wise investment, offering stability and the potential for long-term financial growth. Home ownership allows you to build equity, benefit from tax advantages, and have the freedom to customize your space. Consider buying to secure your financial future and create a lasting home.
-                </p>
-                <button
-                  className='px-6 py-2 text-white font-semibold bg-blue-500 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out'
-                  onClick={goToBuyPage}
-                >
-                  Buy
-                </button>
+            
+            {/* Stats */}
+            <div className="mt-12 flex items-center gap-8 border-t border-gray-100 pt-8">
+              <div>
+                <p className="text-2xl font-bold text-gray-900 font-outfit">2.5k+</p>
+                <p className="text-sm text-gray-500">Listed Properties</p>
+              </div>
+              <div className="w-px h-8 bg-gray-200" />
+              <div>
+                <p className="text-2xl font-bold text-gray-900 font-outfit">1.2k+</p>
+                <p className="text-sm text-gray-500">Happy Clients</p>
               </div>
             </div>
           </div>
-        </section>
-      </main>
-
-      <footer className="bg-blue-600 mt-20 py-6">
-        <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-          <div className="flex flex-col items-center sm:flex-row sm:justify-between">
-            <a href="https://flowbite.com/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-              <span className="self-center text-2xl font-semibold whitespace-nowrap text-black">EstateEmpire</span>
-            </a>
-            <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-              <li>
-                <a href="#" className="text-black hover:underline me-4 md:me-6">About</a>
-              </li>
-              <li>
-                <a href="#" className="text-black hover:underline me-4 md:me-6">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#" className="text-black hover:underline me-4 md:me-6">Licensing</a>
-              </li>
-              <li>
-                <a href="#" className="text-black hover:underline">Contact</a>
-              </li>
-            </ul>
+          
+          <div className="relative animate-fade-in">
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1470&auto=format&fit=crop" 
+                alt="Modern Mansion" 
+                className="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700" 
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                <div className="glass-card p-4 rounded-2xl flex items-center gap-4">
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3].map(i => (
+                      <img key={i} src={`https://i.pravatar.cc/40?img=${i+10}`} className="w-8 h-8 rounded-full border-2 border-white" alt="avatar" />
+                    ))}
+                  </div>
+                  <p className="text-xs font-semibold text-gray-800">Joined by 100+ agents this week</p>
+                </div>
+              </div>
+            </div>
+            {/* Floating Element */}
+            <div className="absolute -bottom-6 -right-6 glass-card p-6 rounded-3xl shadow-xl border border-white/40 hidden lg:block">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-blue-500 rounded-2xl text-white">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                    <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 font-outfit">Secure Payments</p>
+                  <p className="text-xs text-gray-500">M-Pesa Integrated</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-          <span className="block text-sm text-black sm:text-center dark:text-gray-400">
-            <a href="https://flowbite.com/" className="text-black hover:underline">EstateEmpire™</a>. All Rights Reserved.
-          </span>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-outfit">How It Works</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">Get your dream property in three simple steps. We make the process seamless and transparent.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: 'Find Property', desc: 'Browse our extensive catalog of quality properties in prime locations.', step: '01' },
+              { title: 'Secure Payment', desc: 'Pay securely via M-Pesa. Instant confirmation and receipting.', step: '02' },
+              { title: 'Move In', desc: 'Complete the process and get the keys to your new home.', step: '03' }
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 group border border-gray-100">
+                <span className="text-4xl font-bold text-blue-100 group-hover:text-blue-600 transition-colors duration-300 font-outfit">{item.step}</span>
+                <h3 className="text-xl font-bold text-gray-900 mt-4 mb-3 font-outfit">{item.title}</h3>
+                <p className="text-gray-500 mb-6 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-100 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                EstateEmpire
+              </h2>
+            </div>
+            <div className="flex gap-8 text-sm text-gray-500">
+              <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Contact Us</a>
+            </div>
+            <p className="text-sm text-gray-400">© 2025 EstateEmpire. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>
