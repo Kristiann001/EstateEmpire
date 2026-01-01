@@ -3,11 +3,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import formatPrice from './utilis';
 import { FaSearch, FaMapMarkerAlt, FaBed, FaBath } from 'react-icons/fa';
+import PurchaseModal from './PurchaseModal';
+import toast from 'react-hot-toast';
 
 export default function Buy() {
     const [purchases, setPurchases] = useState([]);
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProperty, setSelectedProperty] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -21,6 +25,42 @@ export default function Buy() {
                 setLoading(false);
             });
     }, []);
+
+    const handleBuyClick = (e, property) => {
+        e.preventDefault(); // Prevent Link navigation if button is inside
+        setSelectedProperty(property);
+        setIsModalOpen(true);
+    };
+
+    const handleTransaction = async (phoneNumber) => {
+        try {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+            if (!token) {
+                 toast.error("Please login first");
+                 return;
+            }
+            if (role === 'Agent') {
+                toast.error("Agents cannot purchase properties. Please use a Client account.");
+                return;
+            }
+
+            await axios.post('http://localhost:5000/transactions', {
+                propertyId: selectedProperty.id,
+                type: 'BUY',
+                mpesa_code: phoneNumber // Simulating code with phone number
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            toast.success(`Payment initiated for ${selectedProperty.name}. Check your phone.`);
+            setIsModalOpen(false);
+            // Optionally refresh or redirect
+        } catch (error) {
+            console.error('Transaction failed:', error);
+            toast.error('Transaction failed');
+        }
+    };
 
     const filteredPurchases = purchases.filter(purchase =>
         purchase.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -64,7 +104,7 @@ export default function Buy() {
                             <Link 
                                 to={`/purchase/${purchase.id}`} 
                                 key={purchase.id} 
-                                className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+                                className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
                             >
                                 <div className="relative h-64 overflow-hidden">
                                     <img
@@ -81,7 +121,7 @@ export default function Buy() {
                                         KSh {formatPrice(purchase.price)}
                                     </div>
                                 </div>
-                                <div className="p-6">
+                                <div className="p-6 flex-1 flex flex-col">
                                     <h5 className="text-xl font-bold text-gray-900 mb-2 truncate group-hover:text-blue-600 transition-colors font-outfit">
                                         {purchase.name}
                                     </h5>
@@ -90,7 +130,7 @@ export default function Buy() {
                                         {purchase.location}
                                     </div>
                                     
-                                    <div className="flex items-center gap-6 pt-4 border-t border-gray-50 text-gray-600">
+                                    <div className="flex items-center gap-6 pt-4 border-t border-gray-50 text-gray-600 mt-auto mb-4">
                                         <div className="flex items-center gap-2">
                                             <FaBed className="text-gray-300" />
                                             <span className="text-sm font-semibold">{purchase.bedrooms || '-'}</span>
@@ -100,12 +140,25 @@ export default function Buy() {
                                             <span className="text-sm font-semibold">{purchase.bathrooms || '-'}</span>
                                         </div>
                                     </div>
+
+                                    <button 
+                                        onClick={(e) => handleBuyClick(e, purchase)}
+                                        className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                                    >
+                                        Buy Now
+                                    </button>
                                 </div>
                             </Link>
                         ))}
                     </div>
                 )}
             </div>
+
+            <PurchaseModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                onSubmit={handleTransaction} 
+            />
         </div>
     );
 }

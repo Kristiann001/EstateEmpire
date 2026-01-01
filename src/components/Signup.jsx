@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaUser, FaPhoneAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignupSchema = z.object({
@@ -23,7 +22,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/users', {
+      const response = await fetch('http://localhost:5000/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +51,7 @@ const Signup = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-100 rounded-full blur-[120px] opacity-40" />
       </div>
 
-      <ToastContainer position="top-center" />
+
       
       <div className="w-full max-w-lg animate-fade-in">
         <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-white p-10">

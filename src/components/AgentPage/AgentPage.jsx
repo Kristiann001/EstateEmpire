@@ -5,6 +5,8 @@ import '../AgentPage/AgentPage.css';
 import PaymentsTable from '../AgentPage/PaymentsTable';
 import { useNavigate } from 'react-router-dom';
 
+import toast from 'react-hot-toast';
+
 const AgentPage = () => {
     const [propertyType, setPropertyType] = useState('rent'); 
     const [name, setName] = useState('');
@@ -45,7 +47,16 @@ const AgentPage = () => {
 
         const fetchListings = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/properties');
+                // Agent should see THEIR listings, even if rented/sold? Or just available?
+                // The current backend route filters for AVAILABLE.
+                // Let's create a new route /properties/my-listings or handle filtering.
+                // For now, let's fetch all and filter on client side by implicit ownership logic? 
+                // Better: backend endpoint.
+                
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5000/properties/my-listings', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 setListings(response.data);
             } catch (error) {
                 console.error('Error fetching listings:', error);
@@ -55,6 +66,13 @@ const AgentPage = () => {
         fetchDropdownOptions();
         fetchListings();
     }, []);
+
+    const getAuthHeader = () => {
+        const token = localStorage.getItem('token');
+        return { headers: { Authorization: `Bearer ${token}` } };
+    };
+
+    const [editingId, setEditingId] = useState(null);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -75,25 +93,58 @@ const AgentPage = () => {
         };
 
         try {
-            const endpoint = propertyType === 'rent' ? '/properties/for-rent' : '/properties/for-sale';
-            await axios.post(`http://localhost:5000${endpoint}`, formData);
+            if (editingId) {
+                // Update existing
+                await axios.put(`http://localhost:5000/properties/${editingId}`, formData, getAuthHeader());
+                toast.success('Property updated successfully!');
+                setEditingId(null);
+            } else {
+                // Create new
+                const endpoint = propertyType === 'rent' ? '/properties/for-rent' : '/properties/for-sale';
+                await axios.post(`http://localhost:5000${endpoint}`, formData, getAuthHeader());
+                toast.success('Property added successfully!');
+            }
+
             // Reset form
             setName(''); setPrice(''); setLocation(''); setDescription(''); setUnits(''); setBedrooms(''); setBathrooms(''); setAmenities(''); setImageURL('');
             // Refresh listings
-            const response = await axios.get('http://localhost:5000/properties');
+            const response = await axios.get('http://localhost:5000/properties/my-listings', getAuthHeader());
             setListings(response.data);
+            
         } catch (error) {
-            console.error('Error adding listing:', error);
+            console.error('Error saving listing:', error);
+            toast.error('Failed to save listing');
         }
+    };
+
+    const startEdit = (listing) => {
+        setEditingId(listing.id);
+        setName(listing.name);
+        setPrice(listing.price);
+        setLocation(listing.location);
+        setDescription(listing.description);
+        setUnits(listing.units || '');
+        setBedrooms(listing.bedrooms || '');
+        setBathrooms(listing.bathrooms || '');
+        setImageURL(listing.image || '');
+        // Map type back to logic if needed, or simple toggle
+        setPropertyType(listing.type === 'for_rent' ? 'rent' : 'buy');
+        // Find type name from ID if possible, or just string match if we stored string
+        // The backend stores unit_type_id but we don't have it in the listing response explicitly unless we check
+        // We'll skip precise unit type mapping for now or default it.
+        window.scrollTo(0,0);
+        toast('Editing mode activated', { icon: '✏️' });
     };
 
     const handleDelete = async (id) => {
         if (!window.confirm('Are you sure you want to delete this listing?')) return;
         try {
-            await axios.delete(`http://localhost:5000/properties/${id}`);
+            await axios.delete(`http://localhost:5000/properties/${id}`, getAuthHeader());
             setListings(listings.filter(listing => listing.id !== id));
+            toast.success('Listing deleted successfully');
         } catch (error) {
             console.error('Error deleting listing:', error);
+            toast.error('Failed to delete listing');
         }
     };
 
@@ -143,7 +194,9 @@ const AgentPage = () => {
                         {/* Form Column */}
                         <div className="lg:col-span-1">
                             <div className="glass-card p-8 rounded-3xl sticky top-24">
-                                <h3 className="text-xl font-bold text-gray-900 mb-6 font-outfit">Add New Listing</h3>
+                                <h3 className="text-xl font-bold text-gray-900 mb-6 font-outfit">
+                                    {editingId ? 'Edit Listing' : 'Add New Listing'}
+                                </h3>
                                 
                                 <form onSubmit={handleFormSubmit} className="space-y-4">
                                     {/* Property Type Toggle */}
@@ -269,6 +322,12 @@ const AgentPage = () => {
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />
                                                 <div className="absolute top-4 right-4 flex gap-2">
+                                                    <button 
+                                                        onClick={() => startEdit(listing)}
+                                                        className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
+                                                    >
+                                                        <FaCogs className="text-sm" />
+                                                    </button>
                                                     <button 
                                                         onClick={() => handleDelete(listing.id)}
                                                         className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors"

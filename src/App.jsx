@@ -11,11 +11,15 @@ import Signup from './components/Signup';
 import EmailVerification from './components/EmailVerification';
 import Rented from './components/Rented';
 import Purchased from './components/Purchased';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 import Profile from './components/Profile';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router>
+      <Toaster position="top-center" reverseOrder={false} />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -30,11 +34,11 @@ function App() {
         <Route path ="/rented" element={<Rented />} />
         <Route path ="/purchased" element= {<Purchased />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );
 }
-
-<AgentPage />
 
 export default App;

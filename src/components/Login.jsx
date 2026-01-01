@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const LoginSchema = z.object({
@@ -33,7 +32,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,19 +43,23 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', result.access_token);
+        localStorage.setItem('token', result.token);
         localStorage.setItem('email', data.email);
-        localStorage.setItem('role', result?.user?.role);
+        localStorage.setItem('role', result.role);
+        localStorage.setItem('userId', result.userId); // Store userId for transactions
         setIsLoggedIn(true);
         setLoggedInEmail(data.email);
-        toast.success(`Welcome back! Logged in as ${result.user.role}`);
-        setTimeout(() => navigate('/'), 1500);
-      } else {
-        if (result.message === 'Please verify your email before logging in.') {
-          navigate('/verify-email', { state: { email: data.email } });
+        toast.success(`Welcome back! Logged in as ${result.role}`);
+        
+        // Role based redirect
+        if (result.role === 'Agent') {
+             setTimeout(() => navigate('/agent'), 1500);
         } else {
-          toast.error(result.message || 'Invalid credentials');
+             setTimeout(() => navigate('/'), 1500);
         }
+       
+      } else {
+          toast.error(result.message || 'Invalid credentials');
       }
     } catch (error) {
       toast.error('Connection error. Please try again.');
@@ -66,6 +69,8 @@ const Login = () => {
   const handleLogout = () => {
     localStorage.removeItem('token'); 
     localStorage.removeItem('email'); 
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId'); 
     setIsLoggedIn(false); 
     setLoggedInEmail(''); 
     navigate('/login'); 
@@ -79,7 +84,7 @@ const Login = () => {
         <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-100 rounded-full blur-[120px] opacity-40 animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
-      <ToastContainer position="top-center" />
+
       
       <div className="w-full max-w-md animate-fade-in">
         <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-white p-10">
@@ -130,7 +135,7 @@ const Login = () => {
                   <input type="checkbox" className="rounded-md border-gray-300 text-blue-600 focus:ring-blue-500" />
                   Remember me
                 </label>
-                <a href="#" className="text-blue-600 font-semibold hover:underline">Forgot password?</a>
+                  <Link to="/forgot-password" className="text-blue-600 font-semibold hover:underline">Forgot password?</Link>
               </div>
 
               <button

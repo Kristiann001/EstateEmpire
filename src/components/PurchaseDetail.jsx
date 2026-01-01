@@ -13,7 +13,7 @@ export default function PurchaseDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`http://localhost:5000/properties/for-sale/${id}`, {
+        axios.get(`http://localhost:5000/properties/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -33,14 +33,13 @@ export default function PurchaseDetail() {
     const handleModalSubmit = async (phoneNumber) => {
         setIsModalOpen(false);
         const token = localStorage.getItem('token');
-        const payload = {
-            property_id: parseInt(id),
-            amount: parseInt(purchase.price),
-            phone_number: phoneNumber
-        };
-
+        
         try {
-            await axios.post('http://localhost:5000/purchases', payload, {
+            await axios.post('http://localhost:5000/transactions', {
+                propertyId: parseInt(id),
+                type: 'BUY',
+                mpesa_code: phoneNumber
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

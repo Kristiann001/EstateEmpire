@@ -41,6 +41,7 @@ export default function Navbar() {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
+    localStorage.removeItem('userId');
     checkLoginStatus();
     closeDropdowns();
     navigate('/login');

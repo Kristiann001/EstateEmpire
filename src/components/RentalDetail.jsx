@@ -13,7 +13,7 @@ export default function RentedDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`http://localhost:5000/properties/for-rent/${id}`, {
+        axios.get(`http://localhost:5000/properties/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -33,14 +33,13 @@ export default function RentedDetail() {
     const handleModalSubmit = async (phoneNumber) => {
         setIsModalOpen(false);
         const token = localStorage.getItem('token');
-        const payload = {
-            property_id: parseInt(id),
-            amount: parseInt(rental.price),
-            phone_number: phoneNumber
-        };
-
+        
         try {
-            await axios.post('http://localhost:5000/rentals', payload, {
+            await axios.post('http://localhost:5000/transactions', {
+                propertyId: parseInt(id),
+                type: 'RENT',
+                mpesa_code: phoneNumber
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
